@@ -1,0 +1,21 @@
+{
+    "name": "skay1994/my-framework",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Jorge Carlos",
+            "email": "skay_1994@yahoo.com.br"
+        }
+    ],
+    "require": {
+        "php": "^8.3"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Skay1994\\MyFramework\\": "src/"
+        }
+    }
+}
