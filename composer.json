@@ -22,6 +22,11 @@
             "Skay1994\\MyFramework\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
