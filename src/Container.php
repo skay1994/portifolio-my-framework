@@ -28,6 +28,13 @@ class Container
         return static::$instance;
     }
 
+    public function resetDefault(): void
+    {
+        $app = $this->get('app');
+        $this->flushAll();
+        $app->defaultFacades();
+    }
+
     public function flushAll(): void
     {
         $this->instances = [];
