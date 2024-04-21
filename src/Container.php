@@ -2,6 +2,7 @@
 
 namespace Skay1994\MyFramework;
 
+use Skay1994\MyFramework\Container\ClassHelperContainer;
 use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
 
 /**
@@ -9,6 +10,8 @@ use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
  */
 class Container
 {
+    use ClassHelperContainer;
+
     public static ?Container $instance = null;
 
     protected array $instances = [];
@@ -30,26 +33,21 @@ class Container
     /**
      * @param TValue $abstract
      * @return TValue|null
-     * @throws ClassNotFound
+     * @throws ClassNotFound|\ReflectionException
      */
     public function resolve($abstract): mixed
     {
-        $instance = static::getInstance();
-
-        if(!is_string($abstract)) {
-            return $abstract;
-        }
-
-        if(!class_exists($abstract)) {
-            throw new ClassNotFound($abstract);
-        }
+        $newInstance = null;
 
         if($classInstance = self::get($abstract)) {
             return $classInstance;
         }
 
-        $newInstance = new $abstract;
-        $instance->instances[$abstract] = $newInstance;
+        if(is_string($abstract)) {
+            $newInstance = $this->classResolve($abstract);
+        }
+
+        $this->instances[$abstract] = $newInstance;
 
         return $newInstance;
     }
@@ -58,6 +56,7 @@ class Container
      * @param TValue $abstract
      * @return TValue|null
      * @throws ClassNotFound
+     * @throws \ReflectionException
      */
     public static function make($abstract): mixed
     {
