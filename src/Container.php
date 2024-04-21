@@ -2,6 +2,7 @@
 
 namespace Skay1994\MyFramework;
 
+use RuntimeException;
 use Skay1994\MyFramework\Container\ClassHelperContainer;
 use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
 
@@ -16,6 +17,8 @@ class Container
 
     protected array $instances = [];
 
+    protected array $bindings = [];
+
     public static function getInstance(): static
     {
         if (is_null(static::$instance)) {
@@ -28,6 +31,24 @@ class Container
     public function flushAll(): void
     {
         $this->instances = [];
+        $this->bindings = [];
+    }
+
+    public function bind(string $abstract, $concrete): void
+    {
+        if(is_null($concrete)) {
+            throw new RuntimeException("Container binding concrete cannot be null");
+        }
+
+        if($concrete instanceof \Closure) {
+            $concrete = $concrete($this);
+        }
+
+        if(is_string($concrete)) {
+            $concrete = $this->make($concrete);
+        }
+
+        $this->bindings[$abstract] = $concrete;
     }
 
     /**
