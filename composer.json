@@ -14,6 +14,9 @@
         "symfony/var-dumper": "^7.0",
         "pestphp/pest": "^2.34"
     },
+    "scripts": {
+        "test": "vendor/bin/pest"
+    },
     "autoload": {
         "psr-4": {
             "Skay1994\\MyFramework\\": "src/"
