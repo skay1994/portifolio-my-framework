@@ -56,11 +56,11 @@ class Container
      * @return TValue|null
      * @throws ClassNotFound|\ReflectionException
      */
-    public function resolve($abstract): mixed
+    private function resolve($abstract): mixed
     {
         $newInstance = null;
 
-        if($classInstance = self::get($abstract)) {
+        if($classInstance = $this->get($abstract)) {
             return $classInstance;
         }
 
@@ -79,15 +79,21 @@ class Container
      * @throws ClassNotFound
      * @throws \ReflectionException
      */
-    public static function make($abstract): mixed
+    public function make($abstract): mixed
     {
-        return static::getInstance()->resolve($abstract);
+        return $this->resolve($abstract);
     }
 
-    public static function get(string $class)
+    public function get(string $class)
     {
-        $instance = static::getInstance();
+        if(isset($this->instances[$class]) && $instance = $this->instances[$class]) {
+            return $instance;
+        }
 
-        return $instance->instances[$class] ?? null;
+        if(isset($this->bindings[$class]) && $instance = $this->bindings[$class]) {
+            return $instance;
+        }
+
+        return null;
     }
 }
