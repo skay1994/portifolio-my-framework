@@ -59,6 +59,8 @@ trait ClassHelperContainer
             'int' => 0,
             'float' => 0.0,
             'bool' => false,
+            'array' => [],
+            'object' => new \stdClass(),
             default => ''
         };
     }
