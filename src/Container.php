@@ -2,6 +2,7 @@
 
 namespace Skay1994\MyFramework;
 
+use RuntimeException;
 use Skay1994\MyFramework\Container\ClassHelperContainer;
 use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
 
@@ -16,6 +17,8 @@ class Container
 
     protected array $instances = [];
 
+    protected array $bindings = [];
+
     public static function getInstance(): static
     {
         if (is_null(static::$instance)) {
@@ -25,9 +28,34 @@ class Container
         return static::$instance;
     }
 
+    public function resetDefault(): void
+    {
+        $app = $this->get('app');
+        $this->flushAll();
+        $app->defaultFacades();
+    }
+
     public function flushAll(): void
     {
         $this->instances = [];
+        $this->bindings = [];
+    }
+
+    public function bind(string $abstract, $concrete): void
+    {
+        if(is_null($concrete)) {
+            throw new RuntimeException("Container binding concrete cannot be null");
+        }
+
+        if($concrete instanceof \Closure) {
+            $concrete = $concrete($this);
+        }
+
+        if(is_string($concrete)) {
+            $concrete = $this->make($concrete);
+        }
+
+        $this->bindings[$abstract] = $concrete;
     }
 
     /**
@@ -35,11 +63,11 @@ class Container
      * @return TValue|null
      * @throws ClassNotFound|\ReflectionException
      */
-    public function resolve($abstract): mixed
+    private function resolve($abstract): mixed
     {
         $newInstance = null;
 
-        if($classInstance = self::get($abstract)) {
+        if($classInstance = $this->get($abstract)) {
             return $classInstance;
         }
 
@@ -58,15 +86,21 @@ class Container
      * @throws ClassNotFound
      * @throws \ReflectionException
      */
-    public static function make($abstract): mixed
+    public function make($abstract): mixed
     {
-        return static::getInstance()->resolve($abstract);
+        return $this->resolve($abstract);
     }
 
-    public static function get(string $class)
+    public function get(string $class)
     {
-        $instance = static::getInstance();
+        if(isset($this->instances[$class]) && $instance = $this->instances[$class]) {
+            return $instance;
+        }
 
-        return $instance->instances[$class] ?? null;
+        if(isset($this->bindings[$class]) && $instance = $this->bindings[$class]) {
+            return $instance;
+        }
+
+        return null;
     }
 }
