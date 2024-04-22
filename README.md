@@ -10,6 +10,8 @@ This is a project created for study, so I can visualize, analyze, and rebuild fu
 
 Enhance my understanding of how the PHP language works and, along the way, improve the products and systems I develop.
 
+I'm using GitHub Projects for task management: [Project](https://github.com/users/skay1994/projects/1/views/1)
+
 ## Influences
 
 The initial idea is a replica of Laravel, which is the framework I have the most understanding and mastery of.
