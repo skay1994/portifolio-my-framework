@@ -11,11 +11,17 @@ funcionalidades de outros frameworks.
 
 Aprimorar o meu entendimento de como a linguagem PHP funciona e no caminho melhorar os produtos, sistemas que desenvolvo.
 
+Estou usando o Github Projects para gerenciamento das tarefas: [Projeto](https://github.com/users/skay1994/projects/1/views/1)
+
 ## Influencias
 
 A ideia inicial é uma replica do Laravel que é o framework que tenho maior compreensão e domínio. 
 
 Porem não exclui a possibilidade de incluir recursos de outros frameworks existentes.
+
+## Requisitos
+
+O sistema está sendo construído com PHP 8.3. Vou subindo a versão minima com base nos novos lançamentos do PHP
 
 ## Recursos
 
