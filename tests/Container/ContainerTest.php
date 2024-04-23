@@ -86,7 +86,7 @@ it('Container resolve class constructors multiple with parameters', function () 
 
     expect($container)->toBeInstanceOf(DummyClassParametersExtra::class)
         ->dummyParameters->dummyClass->toBeInstanceOf(DummyClass::class)
-        ->dummyClass->toBeInstanceOf(DummyClass::class)->toBe($container->dummyParameters->dummyClass);
+        ->dummyClass->toBeInstanceOf(DummyClass::class)->not->toBe($container->dummyParameters->dummyClass);
 });
 
 it('Container resolve class constructor with non null parameters', function () {
