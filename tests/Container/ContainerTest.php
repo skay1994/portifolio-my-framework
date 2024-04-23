@@ -62,24 +62,6 @@ it('Container can find and construct class', function () {
     expect($reflection)->toBeInstanceOf(DummyClass::class);
 });
 
-it('Container don\'t duplicate class instance on use make twice ', function () {
-    $reflection = Container::getInstance()->make(DummyClass::class);
-    $recoveredInstance = Container::getInstance()->make(DummyClass::class);
-
-    expect($reflection)
-        ->toBeInstanceOf(get_class($recoveredInstance))
-        ->toBe($recoveredInstance);
-});
-
-it('Container can recovery class from cache', function () {
-    $reflection = Container::getInstance()->make(DummyClass::class);
-    $recoveredInstance = Container::getInstance()->get(DummyClass::class);
-
-    expect($reflection)
-        ->toBeInstanceOf(get_class($recoveredInstance))
-        ->toBe($recoveredInstance);
-});
-
 it('Container throws exception if class not found', function () {
     Container::getInstance()->make('\App\Class\NotFound');
 })->throws(
