@@ -79,6 +79,27 @@ class Container
         }
 
         $this->bindings[$abstract] = compact('concrete', 'shared');
+
+        if($shared) {
+            if($concrete instanceof Closure) {
+                $this->instances[$abstract] = $concrete($this);
+                $this->resolved[$abstract] = true;
+                return;
+            }
+
+            if(is_object($concrete)) {
+                $this->instances[$abstract] = $concrete;
+                $this->resolved[$abstract] = true;
+                return;
+            }
+
+            $instance = $this->resolve($concrete);
+
+            if(is_object($instance)) {
+                $this->instances[$abstract] = $instance;
+                $this->resolved[$abstract] = true;
+            }
+        }
     }
 
     /**
