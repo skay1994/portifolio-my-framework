@@ -16,6 +16,9 @@ class Container
 
     public static ?Container $instance = null;
 
+    /**
+     * @var array<TValue, TValue|null>
+     */
     protected array $bindings = [];
 
     /**
