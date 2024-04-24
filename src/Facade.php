@@ -19,11 +19,13 @@ abstract class Facade
      */
     public static function __callStatic(string $name, array $arguments = []): mixed
     {
-        $instance = Container::getInstance()->get(static::name());
+        $binding = Container::getInstance()->getBinding(static::name());
 
-        if(!$instance) {
+        if(!$binding) {
             throw new RuntimeException('Facade not implemented');
         }
+
+        $instance = Container::getInstance()->get($binding['concrete']);
 
         if(!method_exists($instance, $name)) {
             throw new RuntimeException('Facade not implemented the method [' . $name . ']');
