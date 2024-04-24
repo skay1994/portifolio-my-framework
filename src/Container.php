@@ -103,6 +103,19 @@ class Container
     }
 
     /**
+     * Binds a singleton instance of a class or a closure to the container.
+     *
+     * @param string $abstract The name of the class or interface to bind.
+     * @param mixed $concrete The class or closure to bind.
+     * @throws RuntimeException If the concrete parameter is null.
+     * @return void
+     */
+    public function singleton(string $abstract, mixed $concrete): void
+    {
+        $this->bind($abstract, $concrete, true);
+    }
+
+    /**
      * @param TValue $abstract
      * @return TValue|null
      * @throws ClassNotFound|\ReflectionException
