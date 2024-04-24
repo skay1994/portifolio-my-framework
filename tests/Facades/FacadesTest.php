@@ -18,11 +18,11 @@ class UnregisterDummyClassFacade extends Facade {
 }
 
 beforeEach(function () {
-    Container::resetDefault();
+    $this->container->resetDefault();
 });
 
 it('Register facade and call it', function () {
-    Container::bind('dummyClass', DummyClass::class);
+    $this->container->bind('dummyClass', DummyClass::class);
 
     expect(DummyClassFacade::someMethod())
         ->toBe('someMethod');
@@ -33,7 +33,7 @@ it('Try get access unregistered facade and throw exception', function () {
 })->throws(RuntimeException::class);
 
 it('Register facade and call it with parameters', function () {
-    Container::bind('dummyClass', DummyClass::class);
+    $this->container->bind('dummyClass', DummyClass::class);
 
     $value = DummyClassFacade::methodWithParameter('John Doe');
 
