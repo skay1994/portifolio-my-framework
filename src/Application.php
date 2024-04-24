@@ -31,7 +31,7 @@ class Application
         ];
 
         foreach ($facades as $key => $value) {
-            $container->bind($key, $value);
+            $container->singleton($key, $value);
         }
     }
 }
