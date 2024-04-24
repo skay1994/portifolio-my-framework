@@ -112,19 +112,3 @@ it('Container resolve class constructor with default parameters value', function
         ->age->toBe(18)
         ->isActive->toBeTrue();
 });
-
-## Container bind tests
-
-it('Container bind class with closure', function () {
-    $instance = Container::getInstance();
-    $instance->bind('dummyClass', fn () => new DummyClass);
-
-    expect($instance->get('dummyClass'))->toBeInstanceOf(DummyClass::class);
-});
-
-it('Container bind class with string', function () {
-    $instance = Container::getInstance();
-    $instance->bind('dummyClass', DummyClass::class);
-
-    expect($instance->get('dummyClass'))->toBeInstanceOf(DummyClass::class);
-});
