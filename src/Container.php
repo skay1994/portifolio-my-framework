@@ -2,6 +2,7 @@
 
 namespace Skay1994\MyFramework;
 
+use Closure;
 use RuntimeException;
 use Skay1994\MyFramework\Container\ClassHelperContainer;
 use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
@@ -105,13 +106,29 @@ class Container
             isset($this->instances[$abstract]);
     }
 
-    public function get(string $class)
+    /**
+     * Get an instance from the container if it exists, otherwise resolve it.
+     *
+     * @param string $abstract The abstract class or interface name.
+     * @return mixed The resolved instance.
+     *
+     * @throws ClassNotFound|\ReflectionException
+     */
+    public function get(string $abstract): mixed
     {
-        if(isset($this->bindings[$class]) && $instance = $this->bindings[$class]) {
+        if(isset($this->instances[$abstract]) && $instance = $this->instances[$abstract]) {
             return $instance;
         }
 
-        return null;
+        if(isset($this->bindings[$abstract]) && $item = $this->bindings[$abstract]) {
+            $abstract = $item['concrete'];
+
+            if($abstract instanceof Closure) {
+                return $abstract($this);
+            }
+        }
+
+        return $this->resolve($abstract);
     }
 
     /**
