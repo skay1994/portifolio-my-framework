@@ -19,6 +19,11 @@ class Container
     protected array $bindings = [];
 
     /**
+     * @var array<TValue, TValue|null>
+     */
+    protected array $instances = [];
+
+    /**
      * @var array<string>
      */
     protected array $resolved = [];
