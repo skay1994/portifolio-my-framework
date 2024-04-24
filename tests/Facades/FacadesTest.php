@@ -35,8 +35,6 @@ it('Try get access unregistered facade and throw exception', function () {
 it('Register facade and call it with parameters', function () {
     $this->container->bind('dummyClass', DummyClass::class);
 
-    $value = DummyClassFacade::methodWithParameter('John Doe');
-
-    expect($value)
+    expect(DummyClassFacade::methodWithParameter('John Doe'))
         ->toBe('Hello, John Doe');
 });
