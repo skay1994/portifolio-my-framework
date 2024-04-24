@@ -46,7 +46,16 @@ class Container
         $this->resolved = [];
     }
 
-    public function bind(string $abstract, $concrete): void
+    /**
+     * Binds a concrete implementation to an abstract class or interface.
+     *
+     * @param string $abstract The name of the abstract class or interface.
+     * @param mixed|null $concrete The concrete implementation or closure.
+     * @param bool $shared Whether the binding should be shared or not.
+     * @return void
+     * @throws RuntimeException If the concrete parameter is null.
+     */
+    public function bind(string $abstract, mixed $concrete, bool $shared = false): void
     {
         if(is_null($concrete)) {
             throw new RuntimeException("Container binding concrete cannot be null");
@@ -60,7 +69,7 @@ class Container
             $concrete = $this->make($concrete);
         }
 
-        $this->bindings[$abstract] = $concrete;
+        $this->bindings[$abstract] = compact('concrete', 'shared');
     }
 
     /**
