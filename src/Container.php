@@ -124,7 +124,7 @@ class Container
     {
         $newInstance = null;
 
-        if($classInstance = $this->get($abstract)) {
+        if($this->resolved($abstract) && $classInstance = $this->get($abstract)) {
             return $classInstance;
         }
 
