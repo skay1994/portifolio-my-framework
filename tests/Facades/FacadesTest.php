@@ -1,20 +1,7 @@
 <?php
 
 use Skay1994\MyFramework\Facade;
-use Skay1994\MyFramework\Facades\Container;
-
-class DummyFacClass
-{
-    public function someMethod(): string
-    {
-        return 'someMethod';
-    }
-
-    public function methodWithParameter(string $name): string
-    {
-        return 'Hello, ' . $name;
-    }
-}
+use Tests\TestClass\DummyClass;
 
 class DummyClassFacade extends Facade {
     protected static function name(): string
@@ -31,11 +18,12 @@ class UnregisterDummyClassFacade extends Facade {
 }
 
 beforeEach(function () {
-    Container::resetDefault();
+    $this->container->resetDefault();
 });
 
 it('Register facade and call it', function () {
-    Container::bind('dummyClass', new DummyFacClass);
+    $this->container->bind('dummyClass', DummyClass::class);
+
     expect(DummyClassFacade::someMethod())
         ->toBe('someMethod');
 });
@@ -45,10 +33,8 @@ it('Try get access unregistered facade and throw exception', function () {
 })->throws(RuntimeException::class);
 
 it('Register facade and call it with parameters', function () {
-    Container::bind('dummyClass', new DummyFacClass);
+    $this->container->bind('dummyClass', DummyClass::class);
 
-    $value = DummyClassFacade::methodWithParameter('John Doe');
-
-    expect($value)
+    expect(DummyClassFacade::methodWithParameter('John Doe'))
         ->toBe('Hello, John Doe');
 });

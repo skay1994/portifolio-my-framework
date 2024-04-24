@@ -7,13 +7,12 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use Skay1994\MyFramework\Application;
 use Skay1994\MyFramework\Container;
 
-/**
- * @property-read Application $app
- * @property-read Container $container
- */
-#[AllowDynamicProperties]
 abstract class TestCase extends BaseTestCase
 {
+    protected Application $app;
+
+    protected Container $container;
+
     protected function setUp(): void
     {
         $this->app = new Application();
