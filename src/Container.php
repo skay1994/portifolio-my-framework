@@ -113,4 +113,15 @@ class Container
 
         return null;
     }
+
+    /**
+     * Get the binding for a given abstract.
+     *
+     * @param string $abstract The abstract to get the binding for.
+     * @return mixed
+     */
+    public function getBinding(string $abstract): mixed
+    {
+        return $this->bindings[$abstract] ?? null;
+    }
 }
