@@ -62,19 +62,20 @@ class Container
      * @param bool $shared Whether the binding should be shared or not.
      * @return void
      * @throws RuntimeException If the concrete parameter is null.
+     * @throws RuntimeException If the concrete parameter is object without shared.
      */
-    public function bind(string $abstract, mixed $concrete, bool $shared = false): void
+    public function bind(string $abstract, mixed $concrete = null, bool $shared = false): void
     {
         if(is_null($concrete)) {
             throw new RuntimeException("Container binding concrete cannot be null");
         }
 
-        if($concrete instanceof \Closure) {
-            $concrete = $concrete($this);
+        if(is_string($concrete) && !$this->isClass($concrete)) {
+            throw new RuntimeException("Container binding class {$concrete} not found");
         }
 
-        if(is_string($concrete)) {
-            $concrete = $this->make($concrete);
+        if(!$concrete instanceof Closure && is_object($concrete) &&  !$shared) {
+            throw new RuntimeException("Container can binding an object only on singleton");
         }
 
         $this->bindings[$abstract] = compact('concrete', 'shared');
