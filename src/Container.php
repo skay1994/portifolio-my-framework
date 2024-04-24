@@ -17,6 +17,11 @@ class Container
 
     protected array $bindings = [];
 
+    /**
+     * @var array<string>
+     */
+    protected array $resolved = [];
+
     public static function getInstance(): static
     {
         if (is_null(static::$instance)) {
@@ -37,6 +42,7 @@ class Container
     {
         $this->instances = [];
         $this->bindings = [];
+        $this->resolved = [];
     }
 
     public function bind(string $abstract, $concrete): void
@@ -85,6 +91,18 @@ class Container
     public function make($abstract): mixed
     {
         return $this->resolve($abstract);
+    }
+
+    /**
+     * Check if a given abstract type is resolved.
+     *
+     * @param string $abstract The abstract type to check
+     * @return bool
+     */
+    public function resolved(string $abstract): bool
+    {
+        return isset($this->resolved[$abstract]) ||
+            isset($this->instances[$abstract]);
     }
 
     public function get(string $class)
