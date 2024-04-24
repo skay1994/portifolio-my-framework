@@ -1,8 +1,7 @@
 <?php
 
 use Skay1994\MyFramework\Container;
-
-class DummyClass {}
+use Tests\TestClass\DummyClass;
 
 class DummyClassParameters {
     public function __construct(
