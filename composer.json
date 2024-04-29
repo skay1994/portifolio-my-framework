@@ -1,6 +1,8 @@
 {
     "name": "skay1994/my-framework",
     "type": "library",
+    "license": "MIT",
+    "description": "A project created for study and portfolio, based on other PHP frameworks and their strategies and resources.",
     "authors": [
         {
             "name": "Jorge Carlos",
