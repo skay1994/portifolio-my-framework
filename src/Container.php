@@ -2,6 +2,7 @@
 
 namespace Skay1994\MyFramework;
 
+use Closure;
 use RuntimeException;
 use Skay1994\MyFramework\Container\ClassHelperContainer;
 use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
@@ -15,7 +16,20 @@ class Container
 
     public static ?Container $instance = null;
 
+    /**
+     * @var array<TValue, TValue|null>
+     */
     protected array $bindings = [];
+
+    /**
+     * @var array<TValue, TValue|null>
+     */
+    protected array $instances = [];
+
+    /**
+     * @var array<string>
+     */
+    protected array $resolved = [];
 
     public static function getInstance(): static
     {
@@ -37,23 +51,68 @@ class Container
     {
         $this->instances = [];
         $this->bindings = [];
+        $this->resolved = [];
     }
 
-    public function bind(string $abstract, $concrete): void
+    /**
+     * Binds a concrete implementation to an abstract class or interface.
+     *
+     * @param string $abstract The name of the abstract class or interface.
+     * @param mixed|null $concrete The concrete implementation or closure.
+     * @param bool $shared Whether the binding should be shared or not.
+     * @return void
+     * @throws RuntimeException If the concrete parameter is null.
+     * @throws RuntimeException If the concrete parameter is object without shared.
+     */
+    public function bind(string $abstract, mixed $concrete = null, bool $shared = false): void
     {
         if(is_null($concrete)) {
             throw new RuntimeException("Container binding concrete cannot be null");
         }
 
-        if($concrete instanceof \Closure) {
-            $concrete = $concrete($this);
+        if(is_string($concrete) && !$this->isClass($concrete)) {
+            throw new RuntimeException("Container binding class {$concrete} not found");
         }
 
-        if(is_string($concrete)) {
-            $concrete = $this->make($concrete);
+        if(!$concrete instanceof Closure && is_object($concrete) &&  !$shared) {
+            throw new RuntimeException("Container can binding an object only on singleton");
         }
 
-        $this->bindings[$abstract] = $concrete;
+        $this->bindings[$abstract] = compact('concrete', 'shared');
+
+        if($shared) {
+            if($concrete instanceof Closure) {
+                $this->instances[$abstract] = $concrete($this);
+                $this->resolved[$abstract] = true;
+                return;
+            }
+
+            if(is_object($concrete)) {
+                $this->instances[$abstract] = $concrete;
+                $this->resolved[$abstract] = true;
+                return;
+            }
+
+            $instance = $this->resolve($concrete);
+
+            if(is_object($instance)) {
+                $this->instances[$abstract] = $instance;
+                $this->resolved[$abstract] = true;
+            }
+        }
+    }
+
+    /**
+     * Binds a singleton instance of a class or a closure to the container.
+     *
+     * @param string $abstract The name of the class or interface to bind.
+     * @param mixed $concrete The class or closure to bind.
+     * @throws RuntimeException If the concrete parameter is null.
+     * @return void
+     */
+    public function singleton(string $abstract, mixed $concrete): void
+    {
+        $this->bind($abstract, $concrete, true);
     }
 
     /**
@@ -65,7 +124,7 @@ class Container
     {
         $newInstance = null;
 
-        if($classInstance = $this->get($abstract)) {
+        if($this->resolved($abstract) && $classInstance = $this->get($abstract)) {
             return $classInstance;
         }
 
@@ -87,12 +146,51 @@ class Container
         return $this->resolve($abstract);
     }
 
-    public function get(string $class)
+    /**
+     * Check if a given abstract type is resolved.
+     *
+     * @param string $abstract The abstract type to check
+     * @return bool
+     */
+    public function resolved(string $abstract): bool
     {
-        if(isset($this->bindings[$class]) && $instance = $this->bindings[$class]) {
+        return isset($this->resolved[$abstract]) ||
+            isset($this->instances[$abstract]);
+    }
+
+    /**
+     * Get an instance from the container if it exists, otherwise resolve it.
+     *
+     * @param string $abstract The abstract class or interface name.
+     * @return mixed The resolved instance.
+     *
+     * @throws ClassNotFound|\ReflectionException
+     */
+    public function get(string $abstract): mixed
+    {
+        if(isset($this->instances[$abstract]) && $instance = $this->instances[$abstract]) {
             return $instance;
         }
 
-        return null;
+        if(isset($this->bindings[$abstract]) && $item = $this->bindings[$abstract]) {
+            $abstract = $item['concrete'];
+
+            if($abstract instanceof Closure) {
+                return $abstract($this);
+            }
+        }
+
+        return $this->resolve($abstract);
+    }
+
+    /**
+     * Get the binding for a given abstract.
+     *
+     * @param string $abstract The abstract to get the binding for.
+     * @return mixed
+     */
+    public function getBinding(string $abstract): mixed
+    {
+        return $this->bindings[$abstract] ?? null;
     }
 }
