@@ -29,3 +29,7 @@ jobs:
               ${{ runner.os }}-php-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
+
+      # PestPHP
+      - name: Run Pest tests
+        run: vendor/bin/pest
