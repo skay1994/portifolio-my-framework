@@ -15,8 +15,6 @@ class Container
 
     public static ?Container $instance = null;
 
-    protected array $instances = [];
-
     protected array $bindings = [];
 
     public static function getInstance(): static
@@ -75,8 +73,6 @@ class Container
             $newInstance = $this->classResolve($abstract);
         }
 
-        $this->instances[$abstract] = $newInstance;
-
         return $newInstance;
     }
 
@@ -93,10 +89,6 @@ class Container
 
     public function get(string $class)
     {
-        if(isset($this->instances[$class]) && $instance = $this->instances[$class]) {
-            return $instance;
-        }
-
         if(isset($this->bindings[$class]) && $instance = $this->bindings[$class]) {
             return $instance;
         }
