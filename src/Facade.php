@@ -25,7 +25,15 @@ abstract class Facade
             throw new RuntimeException('Facade not implemented');
         }
 
-        $instance = Container::getInstance()->get($binding['concrete']);
+        $instance = $binding['concrete'];
+
+        if(!is_object($instance) && !is_string($instance)) {
+            throw new RuntimeException('Facade cannot resolve ['.$binding['concrete'].'] to access method [' . $name . ']');
+        }
+
+        if(is_string($binding['concrete'])) {
+            $instance = Container::getInstance()->get($binding['concrete']);
+        }
 
         if(!method_exists($instance, $name)) {
             throw new RuntimeException('Facade not implemented the method [' . $name . ']');
