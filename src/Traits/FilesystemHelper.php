@@ -14,7 +14,12 @@ trait FilesystemHelper
         return $this->app_path;
     }
 
-    public function getRoutesPath(): string
+    /**
+     * Returns the path to the controllers directory.
+     *
+     * @return string The path to the controllers directory.
+     */
+    public function controllersPath(): string
     {
         return $this->joinPaths($this->app_path, 'src', 'http','controllers');
     }

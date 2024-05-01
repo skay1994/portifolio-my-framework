@@ -8,8 +8,8 @@ use Skay1994\MyFramework\Facade;
 /**
  * @method static run()
  *
- * @method static getRoutesPath()
  * @method static basePath()
+ * @method static controllersPath()
  * @method static joinPaths()
  *
  * @see Application
