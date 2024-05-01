@@ -2,8 +2,12 @@
 
 namespace Skay1994\MyFramework;
 
+use Skay1994\MyFramework\Traits\FilesystemHelper;
+
 class Application
 {
+    use FilesystemHelper;
+
     const VERSION = '0.0.1';
 
     public function __construct()
