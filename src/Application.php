@@ -10,7 +10,9 @@ class Application
 
     const VERSION = '0.0.1';
 
-    public function __construct()
+    public function __construct(
+        public string $app_path
+    )
     {
     }
 
