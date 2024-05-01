@@ -36,7 +36,8 @@ class Application
 
         $facades = [
             'container' => $container,
-            'app' => $this
+            'app' => $this,
+            'router' => Router::class,
         ];
 
         foreach ($facades as $key => $value) {
