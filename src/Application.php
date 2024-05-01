@@ -10,10 +10,13 @@ class Application
 
     const VERSION = '0.0.1';
 
+    public Container $container;
+
     public function __construct(
         public string $app_path
     )
     {
+        $this->container = Container::getInstance();
     }
 
     public function run()
@@ -29,7 +32,7 @@ class Application
 
     public function defaultFacades(): void
     {
-        $container = Container::getInstance();
+        $container = $this->container;
 
         $facades = [
             'container' => $container,
