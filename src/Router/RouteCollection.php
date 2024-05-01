@@ -6,6 +6,13 @@ class RouteCollection
 {
     protected static array $routes = [];
 
+    /**
+     * Adds a new route to the routes array.
+     *
+     * @param string $path The path of the route.
+     * @param array $methods An array of HTTP methods allowed for the route.
+     * @return void
+     */
     public function put(string $path, array $methods): void
     {
         self::$routes[] = [
