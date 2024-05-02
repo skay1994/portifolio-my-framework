@@ -41,6 +41,10 @@ trait FilesystemHelper
                 continue;
             }
 
+            if(!$this->hasAnyRouteAttribute($namespace)) {
+                continue;
+            }
+
             $files[] = $namespace;
         }
 
