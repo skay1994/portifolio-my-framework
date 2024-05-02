@@ -4,10 +4,13 @@ namespace Skay1994\MyFramework;
 
 use Skay1994\MyFramework\Attributes\Route;
 use Skay1994\MyFramework\Facades\App;
+use Skay1994\MyFramework\Router\FilesystemHelper;
 use Skay1994\MyFramework\Router\RouteCollection;
 
 class Router
 {
+    use FilesystemHelper;
+
     public function __construct(
         protected RouteCollection $collection
     )
