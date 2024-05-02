@@ -53,17 +53,4 @@ class Router
             }
         }
     }
-
-    private function getNamespace(string $fileName): string
-    {
-        $search = [
-            App::basePath(), '\src', '.php', DIRECTORY_SEPARATOR, '/'
-        ];
-        $replace = ['', '\App', '', '\\', '\\'];
-        $namespace = str_replace($search, $replace, $fileName);
-
-        $map = array_map('ucfirst', explode(DIRECTORY_SEPARATOR, $namespace));
-
-        return implode('\\', $map);
-    }
 }
