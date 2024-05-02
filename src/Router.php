@@ -25,6 +25,32 @@ class Router
         //
     }
 
+    private function registerRouters(): array
+    {
+        /** @var \SplFileInfo $file */
+
+        $routers = [];
+
+        $controllersPath = App::controllersPath();
+        $recursiveDirectory = new \RecursiveDirectoryIterator($controllersPath);
+        $iterator = new \RecursiveIteratorIterator($recursiveDirectory);
+
+        foreach ($iterator as $file) {
+            if($file->isDir()) {
+                continue;
+            }
+            if($file->isFile() && $file->getExtension() !== 'php') {
+                continue;
+            }
+
+            $namespace = $this->getNamespace($file->getPathname());
+
+            if(!class_exists($namespace)) {
+                continue;
+            }
+        }
+    }
+
     private function getNamespace(string $fileName): string
     {
         $search = [
