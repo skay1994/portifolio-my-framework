@@ -6,19 +6,31 @@ use Skay1994\MyFramework\Facades\App;
 
 trait FilesystemHelper
 {
+    /**
+     * Finds all the classes in the given folder and its subfolders.
+     *
+     * @param string $path The path to the folder.
+     * @return array An array of fully qualified class names.
+     */
     private function findClassInFolder(string $path): array
     {
         /** @var \SplFileInfo $file */
 
-        $routers = [];
+        $files = [];
+        $subFolderFiles = [];
 
         $recursiveDirectory = new \RecursiveDirectoryIterator($path);
-        $iterator = new \RecursiveIteratorIterator($recursiveDirectory);
 
-        foreach ($iterator as $file) {
+        foreach ($recursiveDirectory as $file) {
             if($file->isDir()) {
+                if($file->getFilename() === '.' || $file->getFilename() === '..') {
+                    continue;
+                }
+
+                $subFolderFiles[] = $this->findClassInFolder($file->getPathname());
                 continue;
             }
+
             if($file->isFile() && $file->getExtension() !== 'php') {
                 continue;
             }
@@ -28,7 +40,11 @@ trait FilesystemHelper
             if(!class_exists($namespace)) {
                 continue;
             }
+
+            $files[] = $namespace;
         }
+
+        return array_merge($files, ...$subFolderFiles);
     }
 
     /**
