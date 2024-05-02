@@ -13,7 +13,7 @@ class Application
     public Container $container;
 
     public function __construct(
-        public string $app_path
+        public ?string $app_path = null
     )
     {
         $this->container = Container::getInstance();
