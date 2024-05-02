@@ -29,6 +29,10 @@ trait ClassHelper
                 }
             }
 
+            if(!$methodAttribute && count($classAttribute) > 0) {
+                return false;
+            }
+
             return count($classAttribute) > 0 || $methodAttribute;
         } catch (ReflectionException) {
             return false;
