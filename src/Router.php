@@ -2,6 +2,8 @@
 
 namespace Skay1994\MyFramework;
 
+use Skay1994\MyFramework\Attributes\Route;
+use Skay1994\MyFramework\Facades\App;
 use Skay1994\MyFramework\Router\RouteCollection;
 
 class Router
@@ -21,5 +23,18 @@ class Router
     public function handle(string $uri, string $method = 'GET'): mixed
     {
         //
+    }
+
+    private function getNamespace(string $fileName): string
+    {
+        $search = [
+            App::basePath(), '\src', '.php', DIRECTORY_SEPARATOR, '/'
+        ];
+        $replace = ['', '\App', '', '\\', '\\'];
+        $namespace = str_replace($search, $replace, $fileName);
+
+        $map = array_map('ucfirst', explode(DIRECTORY_SEPARATOR, $namespace));
+
+        return implode('\\', $map);
     }
 }
