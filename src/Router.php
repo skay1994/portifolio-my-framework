@@ -2,7 +2,6 @@
 
 namespace Skay1994\MyFramework;
 
-use Skay1994\MyFramework\Attributes\Route;
 use Skay1994\MyFramework\Facades\App;
 use Skay1994\MyFramework\Router\ClassHelper;
 use Skay1994\MyFramework\Router\FilesystemHelper;
@@ -30,29 +29,13 @@ class Router
         //
     }
 
-    private function registerRouters(): array
+    public function registerRouters(): array
     {
-        /** @var \SplFileInfo $file */
-
         $routers = [];
 
-        $controllersPath = App::controllersPath();
-        $recursiveDirectory = new \RecursiveDirectoryIterator($controllersPath);
-        $iterator = new \RecursiveIteratorIterator($recursiveDirectory);
+        $files = $this->findClassInFolder(App::controllersPath());
 
-        foreach ($iterator as $file) {
-            if($file->isDir()) {
-                continue;
-            }
-            if($file->isFile() && $file->getExtension() !== 'php') {
-                continue;
-            }
-
-            $namespace = $this->getNamespace($file->getPathname());
-
-            if(!class_exists($namespace)) {
-                continue;
-            }
-        }
+        return $routers;
     }
+
 }
