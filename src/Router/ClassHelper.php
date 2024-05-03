@@ -4,6 +4,7 @@ namespace Skay1994\MyFramework\Router;
 
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 use Skay1994\MyFramework\Attributes\Route;
 
 trait ClassHelper
@@ -39,4 +40,28 @@ trait ClassHelper
         }
     }
 
+    /**
+     * Retrieves an array of ReflectionMethod objects representing the methods in the given namespace that have the Route attribute.
+     *
+     * @param string $namespace The fully qualified namespace of the class to retrieve the methods from.
+     * @return array<int, ReflectionMethod> An array of ReflectionMethod objects representing the methods with the Route attribute, or an array containing a single false value if an exception is caught.
+     */
+    public function getRoutedMethods(string $namespace): array
+    {
+        try {
+            $reflection = new ReflectionClass($namespace);
+            $methods = [];
+
+            foreach ($reflection->getMethods() as $method) {
+                if ($method->getAttributes(Route::class)) {
+                    $methods[] = $method;
+                    break;
+                }
+            }
+
+            return $methods;
+        } catch (ReflectionException) {
+            return [];
+        }
+    }
 }
