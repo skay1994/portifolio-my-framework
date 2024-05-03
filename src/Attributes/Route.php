@@ -9,8 +9,12 @@ use Skay1994\MyFramework\Facades\Route as RouteFacade;
 class Route
 {
     public function __construct(
-        string $path,
-        array $methods = []
+        string $path = '/',
+        string $group = '',
+        string $prefix = '',
+        string $name = '',
+        array $methods = [],
+        array $options = [],
     )
     {}
 }
