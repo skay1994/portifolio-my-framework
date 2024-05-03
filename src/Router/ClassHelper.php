@@ -50,12 +50,11 @@ trait ClassHelper
     {
         $methods = [];
 
-            foreach ($reflection->getMethods() as $method) {
-                if ($method->getAttributes(Route::class)) {
-                    $methods[] = $method;
-                    break;
-                }
+        foreach ($reflection->getMethods() as $method) {
+            if ($method->getAttributes(Route::class) && $method->isPublic()) {
+                $methods[] = $method;
             }
+        }
 
         return $methods;
     }
