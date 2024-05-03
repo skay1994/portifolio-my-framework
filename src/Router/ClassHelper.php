@@ -41,16 +41,14 @@ trait ClassHelper
     }
 
     /**
-     * Retrieves an array of ReflectionMethod objects representing the methods in the given namespace that have the Route attribute.
+     * Retrieves all the routed methods from a ReflectionClass that have the Route attribute and are public.
      *
-     * @param string $namespace The fully qualified namespace of the class to retrieve the methods from.
-     * @return array<int, ReflectionMethod> An array of ReflectionMethod objects representing the methods with the Route attribute, or an array containing a single false value if an exception is caught.
+     * @param ReflectionClass $reflection The reflection class to retrieve the methods from.
+     * @return array<int, ReflectionMethod> An array of routed methods.
      */
-    public function getRoutedMethods(string $namespace): array
+    public function getRoutedMethods(ReflectionClass $reflection): array
     {
-        try {
-            $reflection = new ReflectionClass($namespace);
-            $methods = [];
+        $methods = [];
 
             foreach ($reflection->getMethods() as $method) {
                 if ($method->getAttributes(Route::class)) {
@@ -59,9 +57,6 @@ trait ClassHelper
                 }
             }
 
-            return $methods;
-        } catch (ReflectionException) {
-            return [];
-        }
+        return $methods;
     }
 }
