@@ -10,6 +10,7 @@ use Skay1994\MyFramework\Facade;
  * @method static flushAll(): void
  * @method static resetDefault(): void
  * @method static setInstances(?array $instances = null): void
+ * @method static getMethodArgs(string $namespace, string $method): void
  * @method static bind(string $abstract, $concrete): void
  * @method static singleton(string $abstract, mixed $concrete): void
  *

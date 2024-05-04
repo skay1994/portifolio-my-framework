@@ -5,6 +5,7 @@ namespace Skay1994\MyFramework\Container;
 use ReflectionClass;
 use ReflectionException;
 use Skay1994\MyFramework\Exceptions\Container\ClassNotFound;
+use Skay1994\MyFramework\Exceptions\Container\MethodNotFoundException;
 use Skay1994\MyFramework\Exceptions\Container\ReflectionErrorException;
 
 trait ClassHelperContainer
@@ -33,6 +34,23 @@ trait ClassHelperContainer
             }
 
             return $reflection->newInstanceArgs($dependencies);
+        } catch (ReflectionException $e) {
+            throw new ReflectionErrorException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function getMethodArgs(string $namespace, string $method): array
+    {
+        try {
+            $reflection = new ReflectionClass($namespace);
+
+            if(!$reflection->hasMethod($method)) {
+                throw new MethodNotFoundException('The method [' . $method . '] not found in class [' . $namespace . ']');
+            }
+
+            $method = $reflection->getMethod($method);
+
+            return $method->getParameters();
         } catch (ReflectionException $e) {
             throw new ReflectionErrorException($e->getMessage(), $e->getCode());
         }
