@@ -29,13 +29,18 @@ class Router
         //
     }
 
-    public function registerRouters(): array
+    public function registerRouters(): void
     {
-        $routers = [];
-
         $files = $this->findClassInFolder(App::controllersPath());
 
-        return $routers;
+        foreach ($files as $file) {
+            try {
+                $this->buildRoutes($file);
+            } catch (\Exception $exception) {
+                $msg = sprintf("Failed to register routes for class [%s]: %s", $file, $exception->getMessage());
+                throw new \RuntimeException($msg);
+            }
+        }
     }
 
 }
