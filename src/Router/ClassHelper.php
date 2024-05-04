@@ -2,6 +2,7 @@
 
 namespace Skay1994\MyFramework\Router;
 
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -57,6 +58,37 @@ trait ClassHelper
         }
 
         return $methods;
+    }
+
+    /**
+     * Parses the given attribute and returns an array with the parsed information.
+     *
+     * @param ReflectionAttribute $attribute The attribute to parse.
+     * @param array $baseRoute An optional array with base route information.
+     * @return array An array with the parsed information.
+     */
+    private function parseAttribute(ReflectionAttribute $attribute, array $baseRoute = []): array
+    {
+        $args = $attribute->getArguments();
+
+        $path = $this->getAttributeArgValue($args, 'path', 0) ?? '/';
+        $methods = $this->getAttributeArgValue($args, 'methods', 1) ?? ['get'];
+        $group = $this->getAttributeArgValue($args, 'group', 2) ?? '';
+        $prefix = $this->getAttributeArgValue($args, 'prefix', 3) ?? '';
+
+        if($baseRoute) {
+            $group = $baseRoute['group'] ?? $group;
+            $prefix = $baseRoute['prefix'] ?? $prefix;
+        }
+
+        $path = $group . $prefix . $path;
+
+        return [
+            'group' => $group,
+            'prefix' => $prefix,
+            'path' => $path,
+            'methods' => array_map('strtoupper', $methods),
+        ];
     }
 
     /**
