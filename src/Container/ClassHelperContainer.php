@@ -56,7 +56,14 @@ trait ClassHelperContainer
         }
     }
 
-    private function parserParameters(\ReflectionParameter $parameter)
+    /**
+     * Parses the parameters of a reflection method and returns the corresponding value.
+     *
+     * @param \ReflectionParameter $parameter The reflection parameter to parse.
+     * @return mixed The parsed value of the parameter.
+     * @throws \ReflectionException If an error occurs while reflecting on the parameter type.
+     */
+    public function parserParameters(\ReflectionParameter $parameter)
     {
         $typeName = $parameter->getType()?->getName();
 
