@@ -4,8 +4,8 @@ namespace Skay1994\MyFramework\Container;
 
 use ReflectionClass;
 use ReflectionException;
-use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
-use Skay1994\MyFramework\Container\Exceptions\ReflectionErrorException;
+use Skay1994\MyFramework\Exceptions\Container\ClassNotFound;
+use Skay1994\MyFramework\Exceptions\Container\ReflectionErrorException;
 
 trait ClassHelperContainer
 {

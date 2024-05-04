@@ -14,7 +14,7 @@ abstract class Facade
     }
 
     /**
-     * @throws Container\Exceptions\ClassNotFound
+     * @throws \Skay1994\MyFramework\Exceptions\Container\ClassNotFound
      * @throws \ReflectionException
      */
     public static function __callStatic(string $name, array $arguments = []): mixed

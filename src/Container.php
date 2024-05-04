@@ -5,7 +5,7 @@ namespace Skay1994\MyFramework;
 use Closure;
 use RuntimeException;
 use Skay1994\MyFramework\Container\ClassHelperContainer;
-use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
+use Skay1994\MyFramework\Exceptions\Container\ClassNotFound;
 
 /**
  * @template TValue
