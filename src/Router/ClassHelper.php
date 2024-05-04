@@ -7,6 +7,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use Skay1994\MyFramework\Attributes\Route;
+use Skay1994\MyFramework\Facades\Container;
 
 trait ClassHelper
 {
@@ -143,5 +144,22 @@ trait ClassHelper
     private function getAttributeArgValue(array $args, string $key, int $index): mixed
     {
         return $args[$key] ?? $args[$index] ?? null;
+    }
+
+    /**
+     * Parses the method parameters from the given route array.
+     *
+     * @param array $route The route array containing the 'use' and 'handle' keys.
+     * @return array The parsed method parameters.
+     */
+    private function parseMethodParameters(array $route): array
+    {
+        $args = Container::getMethodArgs($route['use'], $route['handle']);
+
+        foreach ($args as $key => $value) {
+            $args[$key] = Container::parserParameters($value);
+        }
+
+        return $args;
     }
 }
