@@ -9,15 +9,18 @@ class RouteCollection
     /**
      * Adds a new route to the routes array.
      *
-     * @param string $path The path of the route.
-     * @param array $methods An array of HTTP methods allowed for the route.
+     * @param string $method The HTTP method for the route.
+     * @param string $path The path for the route.
+     * @param string $use The controller to be used for the route.
+     * @param string $handle The method to be called on the controller for the route.
      * @return void
      */
-    public function put(string $path, array $methods): void
+    public function put(string $method, string $path, string $use, string$handle): void
     {
-        self::$routes[] = [
+        self::$routes[$method][] = [
             'path' => $path,
-            'methods' => $methods
+            'use' => $use,
+            'handle' => $handle
         ];
     }
 
