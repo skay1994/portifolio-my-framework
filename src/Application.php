@@ -22,7 +22,7 @@ class Application
     public function run()
     {
         $this->defaultFacades();
-        echo $this->helloWorld();
+//        echo Route::handle($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
     }
 
     private function helloWorld()
@@ -43,5 +43,12 @@ class Application
         foreach ($facades as $key => $value) {
             $container->singleton($key, $value);
         }
+    }
+
+    public function routeDiscovery(): void
+    {
+        /** @var Router $router */
+        $router = $this->container->get('router');
+        $router->registerRouters();
     }
 }
