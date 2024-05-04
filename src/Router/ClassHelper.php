@@ -58,4 +58,17 @@ trait ClassHelper
 
         return $methods;
     }
+
+    /**
+     * Retrieves the value of an attribute argument based on the provided key or index.
+     *
+     * @param array $args The array of attribute arguments.
+     * @param string $key The key of the argument to retrieve.
+     * @param int $index The index of the argument to retrieve.
+     * @return mixed The value of the attribute argument, or null if it does not exist.
+     */
+    private function getAttributeArgValue(array $args, string $key, int $index): mixed
+    {
+        return $args[$key] ?? $args[$index] ?? null;
+    }
 }
