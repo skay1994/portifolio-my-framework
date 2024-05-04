@@ -3,6 +3,7 @@
 namespace Skay1994\MyFramework;
 
 use Skay1994\MyFramework\Facades\App;
+use Skay1994\MyFramework\Facades\Container;
 use Skay1994\MyFramework\Router\ClassHelper;
 use Skay1994\MyFramework\Router\FilesystemHelper;
 use Skay1994\MyFramework\Router\RouteCollection;
@@ -26,7 +27,13 @@ class Router
 
     public function handle(string $uri, string $method = 'GET'): mixed
     {
-        //
+        $route = $this->collection->findRoute($uri, $method);
+
+        $controller = Container::get($route['use']);
+
+        $args = $this->parseMethodParameters($route);
+
+        return call_user_func_array([$controller, $route['handle']], $args);
     }
 
     public function registerRouters(): void
