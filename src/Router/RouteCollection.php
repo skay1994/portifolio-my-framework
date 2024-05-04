@@ -25,6 +25,22 @@ class RouteCollection
     }
 
     /**
+     * Adds a controller route to the routes array for each router in the provided array.
+     *
+     * @param array $controllerRoute The controller route to be added.
+     * @param array $routers The array of routers to add the controller route to.
+     * @return void
+     */
+    public function addController(array $controllerRoute, array $routers): void
+    {
+        foreach ($routers as $router) {
+            foreach ($router['methods'] as $method) {
+                $this->put($method, $router['path'], $controllerRoute['use'], $router['handle']);
+            }
+        }
+    }
+
+    /**
      * Parses the given URI and returns an array of its parts.
      *
      * @param string $uri The URI to be parsed.
