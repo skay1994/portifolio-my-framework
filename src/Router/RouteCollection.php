@@ -41,6 +41,26 @@ class RouteCollection
     }
 
     /**
+     * Find the exact route for the given URI and method.
+     *
+     * @param string $uri The URI to find the route for.
+     * @param string $method The HTTP method for the route.
+     * @return mixed The found route or false if not found.
+     */
+    private function findExactRoute(string $uri, string $method): mixed
+    {
+        $routes = self::$routes[$method];
+
+        foreach ($routes as $route) {
+            if ($route['path'] === $uri || $route['path'] === $uri . '/') {
+                return $route;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Parses the given URI and returns an array of its parts.
      *
      * @param string $uri The URI to be parsed.
