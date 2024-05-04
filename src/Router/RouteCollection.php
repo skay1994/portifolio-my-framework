@@ -2,6 +2,8 @@
 
 namespace Skay1994\MyFramework\Router;
 
+use Skay1994\MyFramework\Exceptions\Route\NotFoundException;
+
 class RouteCollection
 {
     protected static array $routes = [];
@@ -38,6 +40,25 @@ class RouteCollection
                 $this->put($method, $router['path'], $controllerRoute['use'], $router['handle']);
             }
         }
+    }
+
+    /**
+     * Find a route for the given URI and method.
+     *
+     * @param string $uri The URI to find the route for.
+     * @param string $method The HTTP method for the route.
+     * @throws NotFoundException Route not found for the provided URI and method.
+     * @return array The found route.
+     */
+    public function findRoute(string $uri, string $method): array
+    {
+        $route = $this->findExactRoute($uri, $method);
+
+        if(!$route) {
+            throw new NotFoundException('Route not found for URI [' . $uri . '] and method [' . $method . ']');
+        }
+
+        return $route;
     }
 
     /**
