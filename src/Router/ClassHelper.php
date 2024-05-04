@@ -61,6 +61,47 @@ trait ClassHelper
     }
 
     /**
+     * Reflects on a given namespace and creates routes based on the attributes of the class and its methods.
+     *
+     * @param string $namespace The namespace to reflect on.
+     * @throws \ReflectionException If an error occurs while reflecting on the class.
+     * @return void
+     */
+    private function buildRoutes(string $namespace): void
+    {
+        $reflection = new ReflectionClass($namespace);
+
+        $routes = [];
+
+        $controllerRoute = [
+            'group' => null,
+            'use' => $namespace,
+            'prefix' => null,
+            'path' => '/',
+        ];
+
+        if($attribute = $reflection->getAttributes(Route::class)) {
+            $values = $this->parseAttribute(current($attribute));
+            unset($values['methods']);
+
+            $controllerRoute = array_merge($controllerRoute, $values);
+        }
+
+        $methods = $this->getRoutedMethods($reflection);
+
+        foreach ($methods as $method) {
+            $attribute = current($method->getAttributes(Route::class));
+
+            $route = $this->parseAttribute($attribute, $controllerRoute);
+            $route['handle'] = $method->getName();
+
+            $routes[] = $route;
+        }
+
+        $this->collection->addController($controllerRoute, $routes);
+    }
+
+    /**
      * Parses the given attribute and returns an array with the parsed information.
      *
      * @param ReflectionAttribute $attribute The attribute to parse.
