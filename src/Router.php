@@ -36,9 +36,20 @@ class Router
         return call_user_func_array([$controller, $route['handle']], $args);
     }
 
-    public function registerRouters(): void
+    /**
+     * Registers the routers in the specified folder or the default controllers path.
+     *
+     * @param string|null $folder The folder to search for router classes. If null, the default controllers path is used.
+     * @throws \RuntimeException If there is an error registering the routes for a class.
+     * @return void
+     */
+    public function registerRouters(string $folder = null): void
     {
-        $files = $this->findClassInFolder(App::controllersPath());
+        if (is_null($folder)) {
+            $folder = App::controllersPath();
+        }
+
+        $files = $this->findClassInFolder($folder);
 
         foreach ($files as $file) {
             try {
