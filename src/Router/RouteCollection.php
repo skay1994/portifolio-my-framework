@@ -9,6 +9,16 @@ class RouteCollection
     protected static array $routes = [];
 
     /**
+     * Clears all routes from the routes array.
+     *
+     * @return void
+     */
+    public function clearRoutes(): void
+    {
+        self::$routes = [];
+    }
+
+    /**
      * Adds a new route to the routes array.
      *
      * @param string $method The HTTP method for the route.

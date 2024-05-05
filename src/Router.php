@@ -50,4 +50,8 @@ class Router
         }
     }
 
+    public function clearRoutes(): void
+    {
+        $this->collection->clearRoutes();
+    }
 }
