@@ -45,6 +45,8 @@ class RouteCollection
      */
     public function put(string $method, string $path, string $use, string$handle): void
     {
+        $method = strtoupper($method);
+
         self::$routes[$method][] = [
             'path' => $path,
             'use' => $use,
@@ -78,6 +80,8 @@ class RouteCollection
      */
     public function findRoute(string $uri, string $method): array
     {
+        $method = strtoupper($method);
+
         $route = $this->findExactRoute($uri, $method);
 
         if(!$route) {
