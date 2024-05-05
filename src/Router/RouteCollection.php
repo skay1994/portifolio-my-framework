@@ -19,6 +19,22 @@ class RouteCollection
     }
 
     /**
+     * Retrieves the routes array or a specific method's routes array.
+     *
+     * @param string|null $method The HTTP method to retrieve routes for. If null, returns all routes.
+     * @return array The routes array or the specified method's routes array.
+     */
+    public function getRoutes(string $method = null): array
+    {
+        if($method) {
+            $method = strtoupper($method);
+            return self::$routes[$method] ?? [];
+        }
+
+        return self::$routes;
+    }
+
+    /**
      * Adds a new route to the routes array.
      *
      * @param string $method The HTTP method for the route.
