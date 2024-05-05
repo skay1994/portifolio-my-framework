@@ -5,15 +5,15 @@ namespace Skay1994\MyFramework\Facades;
 use Skay1994\MyFramework\Facade;
 
 /**
- * @method static get(string $abstract): mixed
- * @method static make(string $abstract): mixed
- * @method static flushAll(): void
- * @method static resetDefault(): void
- * @method static setInstances(?array $instances = null): void
- * @method static getMethodArgs(string $namespace, string $method): void
- * @method static parserParameters(\ReflectionParameter $parameter ): void
- * @method static bind(string $abstract, $concrete): void
- * @method static singleton(string $abstract, mixed $concrete): void
+ * @method static \mixed get(string $abstract)
+ * @method static \mixed make(string $abstract)
+ * @method static \void flushAll()
+ * @method static \void resetDefault()
+ * @method static \void setInstances(?array $instances = null)
+ * @method static \array getMethodArgs(string $namespace, string $method)
+ * @method static \array parserParameters(\ReflectionParameter $parameter )
+ * @method static \void bind(string $abstract, $concrete)
+ * @method static \void singleton(string $abstract, mixed $concrete)
  *
  * @see \Skay1994\MyFramework\Container
  */
