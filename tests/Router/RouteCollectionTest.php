@@ -1,11 +1,11 @@
 <?php
 
 use Skay1994\MyFramework\Exceptions\Route\NotFoundException;
-use Skay1994\MyFramework\Facades\Route;
+use Skay1994\MyFramework\Facades\Router;
 use Skay1994\MyFramework\Router\RouteCollection;
 
 beforeEach(function () {
-    Route::clearRoutes();
+    Router::clearRoutes();
 });
 
 it('It can add a new route', function () {
