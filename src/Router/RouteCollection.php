@@ -100,6 +100,10 @@ class RouteCollection
      */
     private function findExactRoute(string $uri, string $method): mixed
     {
+        if(!isset(self::$routes[$method])) {
+            return false;
+        }
+
         $routes = self::$routes[$method];
 
         foreach ($routes as $route) {
