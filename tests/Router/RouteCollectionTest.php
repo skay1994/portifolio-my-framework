@@ -15,8 +15,7 @@ it('It can add a new route', function () {
     $route = [
         'path' => '/',
         'use' => 'HomeController',
-        'handle' => 'index',
-        'has_params' => false
+        'handle' => 'index'
     ];
 
     expect($collection->getRoutes('get'))
@@ -33,8 +32,7 @@ it('It can add a new route with multiple methods', function () {
     $route = [
         'path' => '/',
         'use' => 'HomeController',
-        'handle' => 'index',
-        'has_params' => false
+        'handle' => 'index'
     ];
 
     expect($collection->getRoutes('get'))
@@ -56,8 +54,7 @@ it('It can recovery route by URI', function () {
         ->toMatchArray([
             'path' => '/some/uri',
             'use' => 'HomeController',
-            'handle' => 'index',
-            'has_params' => false
+            'handle' => 'index'
         ]);
 });
 
@@ -77,8 +74,7 @@ it('It can add a controller route', function () {
 
     $controllerRoute = [
         'use' => 'HomeController',
-        'handle' => 'index',
-        'has_params' => false
+        'handle' => 'index'
     ];
 
     $routers = [
@@ -86,22 +82,19 @@ it('It can add a controller route', function () {
             'methods' => ['get'],
             'path' => '/',
             'use' => 'HomeController',
-            'handle' => 'index',
-            'has_params' => false
+            'handle' => 'index'
         ],
         [
             'methods' => ['post'],
             'path' => '/',
             'use' => 'HomeController',
-            'handle' => 'index',
-            'has_params' => false
+            'handle' => 'index'
         ],
         [
             'methods' => ['put'],
             'path' => '/edit',
             'use' => 'HomeController',
-            'handle' => 'edit',
-            'has_params' => false
+            'handle' => 'edit'
         ]
     ];
 
