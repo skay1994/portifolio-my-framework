@@ -6,6 +6,9 @@ use Skay1994\MyFramework\Exceptions\Route\NotFoundException;
 
 class RouteCollection
 {
+    /**
+     * @var array<string, array<int, Route>>
+     */
     protected static array $routes = [];
 
     /**
@@ -22,7 +25,7 @@ class RouteCollection
      * Retrieves the routes array or a specific method's routes array.
      *
      * @param string|null $method The HTTP method to retrieve routes for. If null, returns all routes.
-     * @return array The routes array or the specified method's routes array.
+     * @return array<string, array<int, Route>>|array<int, Route> The routes array or the specified method's routes array.
      */
     public function getRoutes(string $method = null): array
     {
