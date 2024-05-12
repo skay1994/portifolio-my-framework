@@ -76,53 +76,19 @@ class RouteCollection
      * @param string $uri The URI to find the route for.
      * @param string $method The HTTP method for the route.
      * @throws NotFoundException Route not found for the provided URI and method.
-     * @return array The found route.
+     * @return Route The found route.
      */
-    public function findRoute(string $uri, string $method): array
+    public function findRoute(string $uri, string $method): Route
     {
         $method = strtoupper($method);
 
-        $route = $this->findExactRoute($uri, $method);
+        $route = array_filter($this->getRoutes($method) ?? [], static fn(Route $route) => $route->match($uri));
+        $route = current($route);
 
         if(!$route) {
             throw new NotFoundException('Route not found for URI [' . $uri . '] and method [' . $method . ']');
         }
 
         return $route;
-    }
-
-    /**
-     * Find the exact route for the given URI and method.
-     *
-     * @param string $uri The URI to find the route for.
-     * @param string $method The HTTP method for the route.
-     * @return mixed The found route or false if not found.
-     */
-    private function findExactRoute(string $uri, string $method): mixed
-    {
-        if(!isset(self::$routes[$method])) {
-            return false;
-        }
-
-        $routes = self::$routes[$method];
-
-        foreach ($routes as $route) {
-            if ($this->compareURI($route['path'], $uri)) {
-                return $route;
-            }
-        }
-
-        return false;
-    }
-
-    private function compareURI(string $routePath, string $uri): bool
-    {
-        $pathWithoutSlashers = ltrim($routePath, '/');
-        $pathWithoutSlashers = rtrim($pathWithoutSlashers, '/');
-
-        $uriWithoutSlashers = ltrim($uri, '/');
-        $uriWithoutSlashers = rtrim($uriWithoutSlashers, '/');
-
-        return $pathWithoutSlashers === $uriWithoutSlashers;
     }
 }
