@@ -122,6 +122,10 @@ trait ClassHelper
         $group = $this->getAttributeArgValue($args, 'group', 2) ?? '';
         $prefix = $this->getAttributeArgValue($args, 'prefix', 3) ?? '';
 
+        if (is_string($methods)) {
+            $methods = [$methods];
+        }
+
         if($baseRoute) {
             $group = $baseRoute['group'] ?? $group;
             $prefix = $baseRoute['prefix'] ?? $prefix;
