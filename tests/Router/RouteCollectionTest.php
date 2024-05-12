@@ -10,7 +10,8 @@ beforeEach(function () {
 
 it('It can add a new route', function () {
     $collection = new RouteCollection();
-    $collection->put('GET', '/', 'HomeController', 'index');
+    $controller = ['use' => 'HomeController'];
+    $collection->put('GET', '/', 'index', $controller);
 
     $route = [
         'path' => '/',
@@ -26,8 +27,9 @@ it('It can add a new route', function () {
 
 it('It can add a new route with multiple methods', function () {
     $collection = new RouteCollection();
-    $collection->put('GET', '/', 'HomeController', 'index');
-    $collection->put('POST', '/', 'HomeController', 'index');
+    $controller = ['use' => 'HomeController'];
+    $collection->put('GET', '/', 'index', $controller);
+    $collection->put('POST', '/', 'index', $controller);
 
     $route = [
         'path' => '/',
@@ -47,7 +49,8 @@ it('It can add a new route with multiple methods', function () {
 
 it('It can recovery route by URI', function () {
     $collection = new RouteCollection();
-    $collection->put('GET', '/some/uri', 'HomeController', 'index');
+    $controller = ['use' => 'HomeController'];
+    $collection->put('GET', '/some/uri','index', $controller);
 
     expect($collection->findRoute('/some/uri', 'get'))
         ->toBeArray()
@@ -65,7 +68,8 @@ it('It can not recovery route by invalid URI', function () {
 
 it('It can not recovery route by invalid http method', function () {
     $collection = new RouteCollection();
-    $collection->put('POST', '/some/uri', 'HomeController', 'index');
+    $controller = ['use' => 'HomeController'];
+    $collection->put('POST', '/some/uri', 'index', $controller);
     $collection->findRoute('/some/uri', 'get');
 })->throws(NotFoundException::class);
 
