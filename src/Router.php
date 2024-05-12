@@ -29,11 +29,11 @@ class Router
     {
         $route = $this->collection->findRoute($uri, $method);
 
-        $controller = Container::get($route['use']);
+        $controller = Container::get($route->getController());
 
         $args = $this->parseMethodParameters($route);
 
-        return call_user_func_array([$controller, $route['handle']], $args);
+        return call_user_func_array([$controller, $route->getHandle()], $args);
     }
 
     /**
