@@ -47,6 +47,11 @@ class Route
         return false;
     }
 
+    /**
+     * Checks if the route path matches the request URI exactly.
+     *
+     * @return bool
+     */
     private function exactRoute(): bool
     {
         $routePath = $this->path;
