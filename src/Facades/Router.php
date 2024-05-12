@@ -10,6 +10,9 @@ use Skay1994\MyFramework\Router as RouterFacade;
  * @method static \mixed handle(string $uri, array $method = 'GET')
  * @method static \void clearRoutes(): void
  * @method static \string registerRouters(string $folder = null)
+ * @method static \void setNamespaceReplacer(array $replacer = null)
+ * @method static \array getNamespaceReplacer()
+ * @method static \array getRouters()
  *
  * @mixin RouterFacade
  */
