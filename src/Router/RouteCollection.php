@@ -107,7 +107,7 @@ class RouteCollection
         $routes = self::$routes[$method];
 
         foreach ($routes as $route) {
-            if ($route['path'] === $uri || $route['path'] === $uri . '/') {
+            if ($this->compareURI($route['path'], $uri)) {
                 return $route;
             }
         }
@@ -115,15 +115,14 @@ class RouteCollection
         return false;
     }
 
-    /**
-     * Parses the given URI and returns an array of its parts.
-     *
-     * @param string $uri The URI to be parsed.
-     * @return array The array of URI parts.
-     */
-    private function parserURI(string $uri): array
+    private function compareURI(string $routePath, string $uri): bool
     {
-        $uriParts = explode('/', $uri);
-        return array_filter($uriParts);
+        $pathWithoutSlashers = ltrim($routePath, '/');
+        $pathWithoutSlashers = rtrim($pathWithoutSlashers, '/');
+
+        $uriWithoutSlashers = ltrim($uri, '/');
+        $uriWithoutSlashers = rtrim($uriWithoutSlashers, '/');
+
+        return $pathWithoutSlashers === $uriWithoutSlashers;
     }
 }
