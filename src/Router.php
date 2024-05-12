@@ -65,4 +65,15 @@ class Router
     {
         $this->collection->clearRoutes();
     }
+
+    /**
+     * Retrieves the routes array or a specific method's routes array.
+     *
+     * @param string|null $method The HTTP method to retrieve routes for. If null, returns all routes.
+     * @return array The routes array or the specified method's routes array.
+     */
+    public function getRouters(string $method = null): array
+    {
+        return $this->collection->getRoutes($method);
+    }
 }
