@@ -39,17 +39,17 @@ class RouteCollection
      *
      * @param string $method The HTTP method for the route.
      * @param string $path The path for the route.
-     * @param string $use The controller to be used for the route.
      * @param string $handle The method to be called on the controller for the route.
+     * @param array $controller The controller to be used for the route.
      * @return void
      */
-    public function put(string $method, string $path, string $use, string$handle): void
+    public function put(string $method, string $path, string $handle, array $controller): void
     {
         $method = strtoupper($method);
 
         self::$routes[$method][] = [
             'path' => $path,
-            'use' => $use,
+            'use' => $controller['use'],
             'handle' => $handle
         ];
     }
@@ -65,7 +65,7 @@ class RouteCollection
     {
         foreach ($routers as $router) {
             foreach ($router['methods'] as $method) {
-                $this->put($method, $router['path'], $controllerRoute['use'], $router['handle']);
+                $this->put($method, $router['path'], $router['handle'], $controllerRoute);
             }
         }
     }

@@ -19,9 +19,9 @@ class Router
     {
     }
 
-    public function create(string $httpMethod, string $path, string $controller, string $method): self
+    public function create(string $httpMethod, string $path, string $method, array $controller): self
     {
-        $this->collection->put($httpMethod, $path, $controller, $method);
+        $this->collection->put($httpMethod, $path, $method, $controller);
         return $this;
     }
 
