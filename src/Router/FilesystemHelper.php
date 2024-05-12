@@ -6,6 +6,8 @@ use Skay1994\MyFramework\Facades\App;
 
 trait FilesystemHelper
 {
+    private ?array $namespaceReplacer = null;
+
     /**
      * Finds all the classes in the given folder and its subfolders.
      *
@@ -51,6 +53,30 @@ trait FilesystemHelper
         return array_merge($files, ...$subFolderFiles);
     }
 
+    public function setNamespaceReplacer(array $replacer = null): self
+    {
+        if(is_null($replacer)) {
+            $replacer = [
+                'search' => [
+                    App::basePath(), '\src', '.php', DIRECTORY_SEPARATOR, '/'
+                ],
+                'replace' => ['', '\App', '', '\\', '\\']
+            ];
+        }
+
+        $this->namespaceReplacer = $replacer;
+        return $this;
+    }
+
+    public function getNamespaceReplacer(): array
+    {
+        if(is_null($this->namespaceReplacer)) {
+            $this->setNamespaceReplacer();
+        }
+
+        return $this->namespaceReplacer;
+    }
+
     /**
      * Generates a namespace from a file name.
      *
@@ -59,10 +85,7 @@ trait FilesystemHelper
      */
     private function getNamespace(string $fileName): string
     {
-        $search = [
-            App::basePath(), '\src', '.php', DIRECTORY_SEPARATOR, '/'
-        ];
-        $replace = ['', '\App', '', '\\', '\\'];
+        ['search' => $search, 'replace' => $replace] = $this->getNamespaceReplacer();
         $namespace = str_replace($search, $replace, $fileName);
 
         $map = array_map('ucfirst', explode(DIRECTORY_SEPARATOR, $namespace));
