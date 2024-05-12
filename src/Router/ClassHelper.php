@@ -85,6 +85,10 @@ trait ClassHelper
             $values = $this->parseAttribute(current($attribute));
             unset($values['methods']);
 
+            if($values['path'] !== '/' && $values['prefix'] === '') {
+                $values['prefix'] = $values['path'];
+            }
+
             $controllerRoute = array_merge($controllerRoute, $values);
         }
 
