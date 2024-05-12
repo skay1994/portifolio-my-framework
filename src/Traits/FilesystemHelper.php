@@ -7,9 +7,9 @@ trait FilesystemHelper
     /**
      * Returns the base path of the application.
      *
-     * @return string The base path of the application.
+     * @return string|null The base path of the application.
      */
-    public function basePath(): string
+    public function basePath(): ?string
     {
         return $this->app_path;
     }
