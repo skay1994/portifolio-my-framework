@@ -17,7 +17,7 @@ class Route
         protected array $details
     )
     {
-        $this->path = $this->details['path'];
+        $this->path = '/'.ltrim($this->details['path'], '/');
         $this->controller = $this->details['use'];
         $this->handle = $this->details['handle'];
     }
@@ -37,6 +37,10 @@ class Route
         $this->requestURI = '/'.ltrim($uri, '/');
 
         if($this->exactRoute()) {
+            return true;
+        }
+
+        if($this->hasParams() && $this->compareUriWithRoute()) {
             return true;
         }
 
@@ -65,5 +69,21 @@ class Route
     private function hasParams(): bool
     {
         return preg_match('/\{\w+}/', $this->path);
+    }
+
+    /**
+     * Compares the current request URI with the route path to determine if they match.
+     *
+     * @return bool Returns true if the URI matches the route path, false otherwise.
+     */
+    public function compareUriWithRoute(): bool
+    {
+        $uri = ltrim($this->requestURI, '/');
+        $path = ltrim($this->path, '/');
+        $path = str_replace('/', '\/', $path);
+
+        $regex = preg_replace('/{[^\/]+}/', '(\w+)', $path);
+
+        return preg_match('/^' . $regex . '$/', $uri);
     }
 }
