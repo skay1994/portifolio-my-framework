@@ -38,20 +38,14 @@ class RouteCollection
      * Adds a new route to the routes array.
      *
      * @param string $method The HTTP method for the route.
-     * @param string $path The path for the route.
-     * @param string $handle The method to be called on the controller for the route.
-     * @param array $controller The controller to be used for the route.
+     * @param Route $route The route object to be added.
      * @return void
      */
-    public function put(string $method, string $path, string $handle, array $controller): void
+    public function put(string $method, Route $route): void
     {
         $method = strtoupper($method);
 
-        self::$routes[$method][] = [
-            'path' => $path,
-            'use' => $controller['use'],
-            'handle' => $handle
-        ];
+        self::$routes[$method][] = $route;
     }
 
     /**
@@ -65,7 +59,7 @@ class RouteCollection
     {
         foreach ($routers as $router) {
             foreach ($router['methods'] as $method) {
-                $this->put($method, $router['path'], $router['handle'], $controllerRoute);
+                $this->put($method, new Route($method, [...$controllerRoute, ...$router]));
             }
         }
     }
