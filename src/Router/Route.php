@@ -56,4 +56,14 @@ class Route
 
         return $pathWithoutSlashers === $uriWithoutSlashers;
     }
+
+    /**
+     * Checks if the route path contains parameters.
+     *
+     * @return bool
+     */
+    private function hasParams(): bool
+    {
+        return preg_match('/\{\w+}/', $this->path);
+    }
 }
