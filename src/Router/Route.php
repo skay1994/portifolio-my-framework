@@ -124,6 +124,28 @@ class Route
     }
 
     /**
+     * Retrieves the parameters from the route path based on the current request URI.
+     *
+     * @return array<string, string> The parameters extracted from the route path.
+     */
+    public function getParameters(): array
+    {
+        if(!$this->hasParams()) {
+            return [];
+        }
+
+        preg_match_all('/\{?(\w+)}/', $this->path, $args);
+        preg_match($this->pathRegex(), ltrim($this->requestURI, '/'), $values);
+        unset($values[0]);
+
+        if(empty($values)) {
+            return [];
+        }
+
+        return array_combine($args[1], $values);
+    }
+
+    /**
      * Generates a regular expression pattern based on the given path.
      *
      * This function takes the path and performs the following transformations:
