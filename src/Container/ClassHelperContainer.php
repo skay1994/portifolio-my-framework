@@ -39,6 +39,15 @@ trait ClassHelperContainer
         }
     }
 
+    /**
+     * Retrieves the parameters of a method in a given namespace.
+     *
+     * @param string $namespace The namespace of the class containing the method.
+     * @param string $method The method name for which to retrieve the parameters.
+     * @throws MethodNotFoundException The method is not found in the specified class.
+     * @throws ReflectionErrorException If an error occurs during reflection on the method.
+     * @return array<int, \ReflectionParameter> The parameters of the specified method.
+     */
     public function getMethodArgs(string $namespace, string $method): array
     {
         try {

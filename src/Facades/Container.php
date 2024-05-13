@@ -10,7 +10,7 @@ use Skay1994\MyFramework\Facade;
  * @method static \void flushAll()
  * @method static \void resetDefault()
  * @method static \void setInstances(?array $instances = null)
- * @method static \array getMethodArgs(string $namespace, string $method)
+ * @method static \array<int, \ReflectionParameter> getMethodArgs(string $namespace, string $method)
  * @method static \array parserParameters(\ReflectionParameter $parameter )
  * @method static \void bind(string $abstract, $concrete)
  * @method static \void singleton(string $abstract, mixed $concrete)
