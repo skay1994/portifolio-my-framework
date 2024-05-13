@@ -163,12 +163,21 @@ trait ClassHelper
      */
     private function parseMethodParameters(RouteClass $route): array
     {
-        $args = Container::getMethodArgs($route->getController(), $route->getHandle());
+        $methodParams = Container::getMethodArgs($route->getController(), $route->getHandle());
+        $routeParams = $route->getParameters();
+        $params = [];
 
-        foreach ($args as $key => $value) {
-            $args[$key] = Container::parserParameters($value);
+        foreach ($methodParams as $param) {
+            $name = $param->getName();
+
+            if(array_key_exists($name, $routeParams)) {
+                $params[$name] = $routeParams[$name];
+                continue;
+            }
+
+            $params[$name] = Container::parserParameters($param);
         }
 
-        return $args;
+        return $params;
     }
 }
