@@ -5,7 +5,7 @@ namespace Skay1994\MyFramework;
 use Closure;
 use RuntimeException;
 use Skay1994\MyFramework\Container\ClassHelperContainer;
-use Skay1994\MyFramework\Container\Exceptions\ClassNotFound;
+use Skay1994\MyFramework\Exceptions\Container\ClassNotFound;
 
 /**
  * @template TValue
@@ -31,6 +31,11 @@ class Container
      */
     protected array $resolved = [];
 
+    /**
+     * Returns an instance of the class or subclass, creating it if it does not exist.
+     *
+     * @return static The instance of the class or subclass.
+     */
     public static function getInstance(): static
     {
         if (is_null(static::$instance)) {
@@ -40,6 +45,13 @@ class Container
         return static::$instance;
     }
 
+    /**
+     * Resets the default state of the object by flushing all instances and
+     * calling the defaultFacades method on the 'app' instance obtained from
+     * the container.
+     *
+     * @return void
+     */
     public function resetDefault(): void
     {
         $app = $this->get('app');
@@ -47,6 +59,11 @@ class Container
         $app->defaultFacades();
     }
 
+    /**
+     * Flushes all instances, bindings, and resolved items.
+     *
+     * @return void
+     */
     public function flushAll(): void
     {
         $this->instances = [];

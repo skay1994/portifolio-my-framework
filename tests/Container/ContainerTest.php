@@ -64,7 +64,7 @@ it('Container can find and construct class', function () {
 it('Container throws exception if class not found', function () {
     Container::getInstance()->make('\App\Class\NotFound');
 })->throws(
-    Container\Exceptions\ClassNotFound::class,
+    \Skay1994\MyFramework\Exceptions\Container\ClassNotFound::class,
     'Service Container: Class [\App\Class\NotFound] not found'
 );
 

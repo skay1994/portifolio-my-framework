@@ -33,11 +33,11 @@ Features are being developed over time.
 
  - [x] Facades: These are classes to facilitate access to other classes, acting as shortcuts.
 
- - [ ] Routes: A routing system using PHP 8 attributes
-   - [ ] Exact Routes
-   - [ ] Routes with parameters
+ - [x] Routes: A routing system using PHP 8 attributes
+   - [x] Exact Routes
+   - [x] Routes with parameters
    - [ ] Route Names
-   - [ ] Routes with multiple HTTP methods
+   - [x] Routes with multiple HTTP methods
    - [ ] Route Groups
 
  - [ ] Database

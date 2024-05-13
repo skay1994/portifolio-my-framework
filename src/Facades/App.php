@@ -2,10 +2,17 @@
 
 namespace Skay1994\MyFramework\Facades;
 
+use Skay1994\MyFramework\Application;
 use Skay1994\MyFramework\Facade;
 
 /**
  * @method static run()
+ *
+ * @method static \string basePath()
+ * @method static \string controllersPath()
+ * @method static \string joinPaths(string ...$args)
+ *
+ * @see Application
  */
 class App extends Facade
 {

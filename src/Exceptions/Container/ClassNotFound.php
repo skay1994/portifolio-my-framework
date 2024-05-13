@@ -1,6 +1,6 @@
 <?php
 
-namespace Skay1994\MyFramework\Container\Exceptions;
+namespace Skay1994\MyFramework\Exceptions\Container;
 
 use Exception;
 
