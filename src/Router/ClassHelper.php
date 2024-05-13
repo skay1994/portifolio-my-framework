@@ -170,8 +170,8 @@ trait ClassHelper
         foreach ($methodParams as $param) {
             $name = $param->getName();
 
-            if(array_key_exists($name, $routeParams)) {
-                $params[$name] = $routeParams[$name];
+            if(array_key_exists($name, $routeParams) && (!is_null($value = $routeParams[$name]) && $value !== '')) {
+                $params[$name] = $value;
                 continue;
             }
 
