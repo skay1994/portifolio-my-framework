@@ -3,6 +3,7 @@
 namespace Skay1994\MyFramework;
 
 use Skay1994\MyFramework\Traits\FilesystemHelper;
+use Spatie\Ignition\Ignition;
 
 class Application
 {
@@ -22,6 +23,10 @@ class Application
     public function run()
     {
         $this->defaultFacades();
+
+        if (class_exists('Spatie\Ignition\Ignition')) {
+            Ignition::make()->setTheme('dark')->register();
+        }
     }
 
     /**
