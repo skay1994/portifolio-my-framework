@@ -12,7 +12,7 @@ use Skay1994\MyFramework\Router as RouterFacade;
  * @method static \string registerRouters(string $folder = null)
  * @method static \void setNamespaceReplacer(array $replacer = null)
  * @method static \array getNamespaceReplacer()
- * @method static \array getRouters()
+ * @method static array getRouters(string $method = null)
  *
  * @mixin RouterFacade
  */
