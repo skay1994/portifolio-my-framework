@@ -7,6 +7,7 @@ use Tests\Router\TestControllers\ControllerWithPrefix;
 use Skay1994\MyFramework\Facades\App;
 use Skay1994\MyFramework\Facades\Container;
 use Skay1994\MyFramework\Facades\Router;
+use Tests\Router\TestControllers\ControllerWithRouteParameter;
 
 beforeEach(function () {
     Router::clearRoutes();
@@ -84,6 +85,34 @@ it('find router by path and method', function () {
     expect($response)
         ->not->toBeNull()
         ->toEqual('search users');
+});
+
+it('find router with path using parameter', function () {
+    $router = Container::get('router');
+
+    (new ReflectionClass($router))
+        ->getMethod('buildRoutes')
+        ->invoke($router, ControllerWithRouteParameter::class);
+
+    $response = Router::handle('search/999', 'get');
+
+    expect($response)
+        ->not->toBeNull()
+        ->toEqual('My id is 999');
+});
+
+it('find router with path using optional parameter ', function () {
+    $router = Container::get('router');
+
+    (new ReflectionClass($router))
+        ->getMethod('buildRoutes')
+        ->invoke($router, ControllerWithRouteParameter::class);
+
+    $response = Router::handle('search', 'post');
+
+    expect($response)
+        ->not->toBeNull()
+        ->toEqual('My id is WithoutID');
 });
 
 it('register controller with attribute but without methods with attribute', function () {
