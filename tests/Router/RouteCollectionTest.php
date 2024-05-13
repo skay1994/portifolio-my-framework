@@ -2,6 +2,7 @@
 
 use Skay1994\MyFramework\Exceptions\Route\NotFoundException;
 use Skay1994\MyFramework\Facades\Router;
+use Skay1994\MyFramework\Router\Route;
 use Skay1994\MyFramework\Router\RouteCollection;
 
 beforeEach(function () {
@@ -115,3 +116,61 @@ it('It can add a controller route', function () {
         ->and(current($collection->getRoutes('put')))
         ->toMatchArray($routers[2]);
 });
+
+// Parameters Tests
+
+it('It can resolve route with single parameter', function () {
+    $route = new Route('GET', ['path' => 'users/{id}', 'use' => 'HomeController', 'handle' => 'index']);
+    $collection = new RouteCollection();
+    $collection->put('GET', $route);
+
+    expect($collection->findRoute('/users/1', 'get'))->toEqual($route)
+        ->getController()->toEqual('HomeController')
+        ->getHandle()->toEqual('index')
+        ->getParameters()->toBeArray()->toMatchArray(['id' => 1])
+        ->pathRegex()->toEqual('/users\/(\w+)$/');
+});
+
+it('It can resolve route with multiple parameter', function () {
+    $route = new Route('GET', ['path' => 'users/{id}/reports/{report_type}', 'use' => 'HomeController', 'handle' => 'index']);
+    $collection = new RouteCollection();
+    $collection->put('GET', $route);
+
+    expect($collection->findRoute('/users/1/reports/yearly', 'get'))->toEqual($route)
+        ->getController()->toEqual('HomeController')
+        ->getHandle()->toEqual('index')
+        ->getParameters()->toBeArray()->toMatchArray(['id' => 1, 'report_type' => 'yearly'])
+        ->pathRegex()->toEqual('/users\/(\w+)\/reports\/(\w+)$/');
+});
+
+it('It can resolve route with optional parameter', function () {
+    $route = new Route('GET', ['path' => 'users/{id}/reports/{?report_type}', 'use' => 'HomeController', 'handle' => 'index']);
+    $collection = new RouteCollection();
+    $collection->put('GET', $route);
+
+    expect($collection->findRoute('/users/1/reports/yearly', 'get'))->toEqual($route)
+        ->getController()->toEqual('HomeController')
+        ->getHandle()->toEqual('index')
+        ->getParameters()->toBeArray()->toMatchArray(['id' => 1, 'report_type' => 'yearly'])
+        ->pathRegex()->toEqual('/users\/(\w+)\/reports\/?(\w*)$/');
+});
+
+it('It can resolve route only with optional parameter', function () {
+    $route = new Route('GET', ['path' => 'reports/{?report_type}', 'use' => 'HomeController', 'handle' => 'index']);
+    $collection = new RouteCollection();
+    $collection->put('GET', $route);
+
+    expect($collection->findRoute('reports', 'get'))->toEqual($route)
+        ->getController()->toEqual('HomeController')
+        ->getHandle()->toEqual('index')
+        ->getParameters()->toBeArray()->toMatchArray(['report_type' => ''])
+        ->pathRegex()->toEqual('/reports\/?(\w*)$/');
+});
+
+it('It cannot resolve route by missing parameter', function () {
+    $route = new Route('GET', ['path' => 'users/{id}', 'use' => 'HomeController', 'handle' => 'index']);
+    $collection = new RouteCollection();
+    $collection->put('GET', $route);
+
+    $collection->findRoute('/users', 'get');
+})->throws(NotFoundException::class);
