@@ -1,5 +1,6 @@
 <?php
 
+use Skay1994\MyFramework\Router\Route;
 use Tests\Router\TestControllers\ControllerWithoutMethodAttribute;
 use Tests\Router\TestControllers\ControllerWithPath;
 use Tests\Router\TestControllers\ControllerWithPrefix;
@@ -37,18 +38,16 @@ it('Register controller with prefix appends all internal routers', function () {
     expect($router->getRouters())
         ->toHaveCount(2)
         ->and($router->getRouters('get')[0])
-        ->toMatchArray([
-            'path' => 'search/',
-            'use' => ControllerWithPrefix::class,
-            'handle' => 'index',
-        ])
+        ->toBeInstanceOf(Route::class)
+        ->getPath()->toEqual('/search/')
+        ->getController()->toEqual(ControllerWithPrefix::class)
+        ->getHandle()->toEqual('index')
+
         ->and($router->getRouters('post')[0])
-        ->toMatchArray([
-            'path' => 'search/',
-            'use' => ControllerWithPrefix::class,
-            'handle' => 'updateSearch',
-        ])
-    ;
+        ->toBeInstanceOf(Route::class)
+        ->getPath()->toEqual('/search/')
+        ->getController()->toEqual(ControllerWithPrefix::class)
+        ->getHandle()->toEqual('updateSearch');
 });
 
 it('Register controller path and without prefix appends all internal routers', function () {
@@ -61,18 +60,16 @@ it('Register controller path and without prefix appends all internal routers', f
     expect($router->getRouters())
         ->toHaveCount(2)
         ->and($router->getRouters('get')[0])
-        ->toMatchArray([
-            'path' => 'search/',
-            'use' => ControllerWithPath::class,
-            'handle' => 'index',
-        ])
+        ->toBeInstanceOf(Route::class)
+        ->getPath()->toEqual('/search/')
+        ->getController()->toEqual(ControllerWithPath::class)
+        ->getHandle()->toEqual('index')
+
         ->and($router->getRouters('post')[0])
-        ->toMatchArray([
-            'path' => 'search/',
-            'use' => ControllerWithPath::class,
-            'handle' => 'updateSearch',
-        ])
-    ;
+        ->toBeInstanceOf(Route::class)
+        ->getPath()->toEqual('/search/')
+        ->getController()->toEqual(ControllerWithPath::class)
+        ->getHandle()->toEqual('updateSearch');
 });
 
 it('find router by path and method', function () {
@@ -86,8 +83,7 @@ it('find router by path and method', function () {
 
     expect($response)
         ->not->toBeNull()
-        ->toEqual('search users')
-    ;
+        ->toEqual('search users');
 });
 
 it('register controller with attribute but without methods with attribute', function () {
