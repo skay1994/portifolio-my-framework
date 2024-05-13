@@ -52,6 +52,16 @@ class Route
     }
 
     /**
+     * Retrieves the path of the current object.
+     *
+     * @return string The path of the current object.
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
      * Matches the given URI with the route path to determine if they match.
      *
      * @param string $uri The URI to match against the route path.
