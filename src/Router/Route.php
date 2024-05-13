@@ -119,11 +119,29 @@ class Route
     public function compareUriWithRoute(): bool
     {
         $uri = ltrim($this->requestURI, '/');
+
+        return preg_match($this->pathRegex(), $uri);
+    }
+
+    /**
+     * Generates a regular expression pattern based on the given path.
+     *
+     * This function takes the path and performs the following transformations:
+     * - Removes the leading slash from the path.
+     * - Replaces any slashes with escaped slashes.
+     * - Replaces any occurrences of `{parameter}` with `(\w+)`.
+     *
+     * The resulting regular expression pattern is returned.
+     *
+     * @return string The generated regular expression pattern.
+     */
+    public function pathRegex(): string
+    {
         $path = ltrim($this->path, '/');
         $path = str_replace('/', '\/', $path);
 
         $regex = preg_replace('/{[^\/]+}/', '(\w+)', $path);
 
-        return preg_match('/^' . $regex . '$/', $uri);
+        return '/^' . $regex . '$/';
     }
 }
