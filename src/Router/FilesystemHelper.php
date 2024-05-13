@@ -53,7 +53,16 @@ trait FilesystemHelper
         return array_merge($files, ...$subFolderFiles);
     }
 
-    public function setNamespaceReplacer(array $replacer = null): self
+    /**
+     * @var $replacer array{search: array, replace: array}
+     *
+     * Sets the namespace replacer array for the class.
+     *
+     * @param array|null $replacer The replacer array with 'search' and 'replace' keys.
+     *                            If null, a default replacer array is used.
+     * @return static Returns the current instance of the class.
+     */
+    public function setNamespaceReplacer(array $replacer = null): static
     {
         if(is_null($replacer)) {
             $replacer = [
@@ -68,6 +77,11 @@ trait FilesystemHelper
         return $this;
     }
 
+    /**
+     * Retrieves the namespace replacer array for the class.
+     *
+     * @return array The namespace replacer array.
+     */
     public function getNamespaceReplacer(): array
     {
         if(is_null($this->namespaceReplacer)) {

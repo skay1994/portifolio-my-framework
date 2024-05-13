@@ -22,14 +22,15 @@ class Application
     public function run()
     {
         $this->defaultFacades();
-//        echo Route::handle($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
     }
 
-    private function helloWorld()
-    {
-        return 'My Framework by Jorge Carlos v'.self::VERSION;
-    }
-
+    /**
+     * Initializes the default facades for the application.
+     *
+     * This function sets up the default facades for the application by registering them as singletons in the container.
+     *
+     * @return void
+     */
     public function defaultFacades(): void
     {
         $container = $this->container;
@@ -45,6 +46,11 @@ class Application
         }
     }
 
+    /**
+     * Discovers and registers routes for the application.
+     *
+     * @return void
+     */
     public function routeDiscovery(): void
     {
         /** @var Router $router */

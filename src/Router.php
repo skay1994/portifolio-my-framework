@@ -2,6 +2,7 @@
 
 namespace Skay1994\MyFramework;
 
+use Skay1994\MyFramework\Exceptions\Route\NotFoundException;
 use Skay1994\MyFramework\Facades\App;
 use Skay1994\MyFramework\Facades\Container;
 use Skay1994\MyFramework\Router\ClassHelper;
@@ -19,12 +20,14 @@ class Router
     {
     }
 
-    public function create(string $httpMethod, string $path, string $method, array $controller): self
-    {
-        $this->collection->put($httpMethod, $path, $method, $controller);
-        return $this;
-    }
-
+    /**
+     * Handles the request by finding the appropriate route and executing the associated controller method.
+     *
+     * @param string $uri The URI of the request.
+     * @param string $method The HTTP method of the request (default: 'GET').
+     * @return mixed The result of the controller method execution.
+     * @throws NotFoundException If the route or controller cannot be found.
+     */
     public function handle(string $uri, string $method = 'GET'): mixed
     {
         $route = $this->collection->findRoute($uri, $method);
@@ -61,6 +64,11 @@ class Router
         }
     }
 
+    /**
+     * Clears all routes from the routes array.
+     *
+     * @return void
+     */
     public function clearRoutes(): void
     {
         $this->collection->clearRoutes();
