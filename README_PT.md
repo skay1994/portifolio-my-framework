@@ -34,12 +34,13 @@ caso seja outras classes, o container vai repetir o processo para retornar a ins
    - [x] Bindings: Cria um vinculo a uma string a uma instancia de classe/função/outros, para facil recuperação em qualquer local da aplicação
 
  - [x] Facades: São classes para facilitar o acesso a outras classes, como atalhos.
- - [ ] Rotas: Um sistema de rotas usando os atributos do PHP 8
-   - [ ] Rotas Exatas
-   - [ ] Rotas com parametros
+ - [x] Rotas: Um sistema de rotas usando os atributos do PHP 8
+   - [x] Rotas Exatas
+   - [x] Rotas com parametros
    - [ ] Nome de Rotas
-   - [ ] Rotas com multiplos metodos HTTP
+   - [x] Rotas com multiplos metodos HTTP
    - [ ] Grupo de Rotas
+
  - [ ] Database
    - [ ] QueryBuilder
    - [ ] ORM
