@@ -108,7 +108,7 @@ class Route
      */
     private function hasParams(): bool
     {
-        return preg_match('/\{\w+}/', $this->path);
+        return preg_match('/\{\w+}/', $this->path) || preg_match('/\{\?\w+}/', $this->path);
     }
 
     /**
@@ -140,8 +140,9 @@ class Route
         $path = ltrim($this->path, '/');
         $path = str_replace('/', '\/', $path);
 
-        $regex = preg_replace('/{[^\/]+}/', '(\w+)', $path);
+        $regex = preg_replace('/\{(\w+)}/', '(\w+)', $path);
+        $regex = preg_replace('/\{\?(\w+)}/', '?(\w*)', $regex);
 
-        return '/^' . $regex . '$/';
+        return '/' . $regex . '$/';
     }
 }
