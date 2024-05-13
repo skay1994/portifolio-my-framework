@@ -11,55 +11,42 @@ beforeEach(function () {
 
 it('It can add a new route', function () {
     $collection = new RouteCollection();
-    $controller = ['use' => 'HomeController'];
-    $collection->put('GET', '/', 'index', $controller);
 
-    $route = [
-        'path' => '/',
-        'use' => 'HomeController',
-        'handle' => 'index'
-    ];
+    $route = new Route('GET', ['path' => '/', 'handle' => 'index', 'use' => 'HomeController']);
+
+    $collection->put('GET', $route);
 
     expect($collection->getRoutes('get'))
         ->toHaveCount(1)
-        ->and(current($collection->getRoutes('get')))
-        ->toMatchArray($route);
+        ->and(current($collection->getRoutes('get')))->toEqual($route);
 });
 
 it('It can add a new route with multiple methods', function () {
     $collection = new RouteCollection();
-    $controller = ['use' => 'HomeController'];
-    $collection->put('GET', '/', 'index', $controller);
-    $collection->put('POST', '/', 'index', $controller);
 
-    $route = [
-        'path' => '/',
-        'use' => 'HomeController',
-        'handle' => 'index'
-    ];
+    $routeGet = new Route('GET', ['path' => '/', 'handle' => 'index', 'use' => 'HomeController']);
+    $routePost = new Route('GET', ['path' => '/', 'handle' => 'index', 'use' => 'HomeController']);
+
+    $collection->put('GET', $routeGet);
+    $collection->put('POST', $routePost);
 
     expect($collection->getRoutes('get'))
         ->toHaveCount(1)
         ->and($collection->getRoutes('post'))
         ->toHaveCount(1)
-        ->and(current($collection->getRoutes('get')))
-        ->toMatchArray($route)
-        ->and(current($collection->getRoutes('post')))
-        ->toMatchArray($route);
+        ->and(current($collection->getRoutes('get')))->toEqual($routeGet)
+        ->and(current($collection->getRoutes('post')))->toEqual($routePost);
 });
 
 it('It can recovery route by URI', function () {
     $collection = new RouteCollection();
-    $controller = ['use' => 'HomeController'];
-    $collection->put('GET', '/some/uri','index', $controller);
+
+    $route = new Route('GET', ['path' => '/some/uri', 'handle' => 'index', 'use' => 'HomeController']);
+
+    $collection->put('GET', $route);
 
     expect($collection->findRoute('/some/uri', 'get'))
-        ->toBeArray()
-        ->toMatchArray([
-            'path' => '/some/uri',
-            'use' => 'HomeController',
-            'handle' => 'index'
-        ]);
+        ->toEqual($route);
 });
 
 it('It can not recovery route by invalid URI', function () {
@@ -69,8 +56,11 @@ it('It can not recovery route by invalid URI', function () {
 
 it('It can not recovery route by invalid http method', function () {
     $collection = new RouteCollection();
-    $controller = ['use' => 'HomeController'];
-    $collection->put('POST', '/some/uri', 'index', $controller);
+
+    $route = new Route('POST', ['path' => '/some/uri', 'handle' => 'index', 'use' => 'HomeController']);
+
+    $collection->put('POST', $route);
+
     $collection->findRoute('/some/uri', 'get');
 })->throws(NotFoundException::class);
 
@@ -110,11 +100,11 @@ it('It can add a controller route', function () {
     expect($collection->getRoutes())
         ->toHaveCount(3)->toHaveKeys(['GET', 'POST', 'PUT'])
         ->and(current($collection->getRoutes('get')))
-        ->toMatchArray($routers[0])
+        ->getPath()->toEqual($routers[0]['path'])
         ->and(current($collection->getRoutes('post')))
-        ->toMatchArray($routers[1])
+        ->getPath()->toEqual($routers[1]['path'])
         ->and(current($collection->getRoutes('put')))
-        ->toMatchArray($routers[2]);
+        ->getPath()->toEqual($routers[2]['path']);
 });
 
 // Parameters Tests
