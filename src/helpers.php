@@ -24,3 +24,15 @@ function joinPaths(string $basePath, ...$paths): string
 
     return $basePath.implode('', $paths);
 }
+
+/**
+ * Renders a view with the specified data.
+ *
+ * @param string $view The path to the view file.
+ * @param array $data An associative array of data to pass to the view.
+ * @return string The rendered view content.
+ */
+function view(string $view, array $data = []): string
+{
+    return Container::make(View::class)->render($view, $data);
+}
