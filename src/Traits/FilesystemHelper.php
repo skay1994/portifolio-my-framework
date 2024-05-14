@@ -15,6 +15,17 @@ trait FilesystemHelper
     }
 
     /**
+     * Sets the base path of the application.
+     *
+     * @param string $appPath The base path of the application.
+     * @return void
+     */
+    public function setBasePath(string $appPath): void
+    {
+        $this->app_path = $appPath;
+    }
+
+    /**
      * Returns the path to the controllers directory.
      *
      * @return string The path to the controllers directory.
