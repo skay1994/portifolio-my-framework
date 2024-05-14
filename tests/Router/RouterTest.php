@@ -13,14 +13,14 @@ beforeEach(function () {
     Router::clearRoutes();
     Router::setNamespaceReplacer([
         'search' => [
-            App::joinPaths(dirname(__DIR__)), '', '.php', DIRECTORY_SEPARATOR, '/'
+            joinPaths(dirname(__DIR__)), '', '.php', DIRECTORY_SEPARATOR, '/'
         ],
         'replace' => ['\Tests', '\Tests', '', '\\', '\\']
     ]);
 });
 
 it('find and registers all controller in folder', function () {
-    $path = App::joinPaths(dirname(__DIR__), 'Router', 'Controllers');
+    $path = joinPaths(dirname(__DIR__), 'Router', 'Controllers');
     Router::registerRouters($path);
 
     expect(Router::getRouters())
