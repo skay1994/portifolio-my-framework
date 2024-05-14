@@ -87,4 +87,24 @@ class Filesystem
 
         throw new FileFolderNotFoundException('File or folder not found to remove: ' . $path);
     }
+
+    /**
+     * Retrieves the required php file based on the provided path.
+     *
+     * @param string $path The path to the required php file.
+     * @param array $data Additional data to pass to the required file.
+     * @throws FileNotFoundException File not found at path: $path
+     * @return mixed The content of the required file.
+     */
+    public function getRequired(string $path, array $data = []): mixed
+    {
+        if($this->exists($path)) {
+            return (static function () use ($path, $data) {
+                extract($data, EXTR_SKIP);
+                return require $path;
+            })();
+        }
+
+        throw new FileNotFoundException('File not found at path: ' . $path);
+    }
 }
