@@ -23,4 +23,26 @@ trait FilesystemHelper
     {
         return joinPaths($this->app_path, 'src', 'http','controllers');
     }
+
+    /**
+     * Returns the path to a resource file or directory.
+     *
+     * @param string ...$path The path segments to append to the base resource path.
+     * @return string The path to the resource file or directory.
+     */
+    public function resourcePath(): string
+    {
+        return joinPaths($this->app_path, 'resources', ...func_get_args());
+    }
+
+    /**
+     * Returns the path to a view file or directory.
+     *
+     * @param string ...$path The path segments to append to the base view path.
+     * @return string The path to the view file or directory.
+     */
+    public function viewsPath(): string
+    {
+        return $this->resourcePath('views', ...func_get_args());
+    }
 }
