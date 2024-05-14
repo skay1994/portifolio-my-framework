@@ -48,3 +48,9 @@ caso seja outras classes, o container vai repetir o processo para retornar a ins
 ## Tests
 
 O código está sendo feito com testes via PestPHP.
+
+##  Aplicativos
+
+Aplicativos com esse framework:
+
+ - Aplicação Base: [my-application](https://github.com/skay1994/portifolio-my-application/blob/master/README_PT.md)
