@@ -11,6 +11,14 @@ class View
     {
     }
 
+    /**
+     * Renders a view based on the provided path and optional data.
+     *
+     * @param string $path The path of the view to render.
+     * @param array $data An optional array of data to pass to the view.
+     * @throws \Throwable
+     * @return string The rendered view content.
+     */
     public function render(string $path, array $data = []): string
     {
         $parsed = explode('.', $path) ?? [];
