@@ -20,6 +20,9 @@
         "test": "vendor/bin/pest"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "Skay1994\\MyFramework\\": "src/"
         }
