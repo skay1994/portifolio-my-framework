@@ -107,12 +107,22 @@ class Container
             if(is_object($concrete)) {
                 $this->instances[$abstract] = $concrete;
                 $this->resolved[$abstract] = true;
+
+                if($class = get_class($concrete)) {
+                    $this->instances[$class] = $concrete;
+                    $this->resolved[$class] = true;
+                }
+
                 return;
             }
 
             $instance = $this->resolve($concrete);
 
             if(is_object($instance)) {
+                $class = get_class($instance);
+                $this->instances[$class] = $instance;
+                $this->resolved[$class] = true;
+
                 $this->instances[$abstract] = $instance;
                 $this->resolved[$abstract] = true;
             }

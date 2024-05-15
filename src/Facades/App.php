@@ -9,8 +9,8 @@ use Skay1994\MyFramework\Facade;
  * @method static run()
  *
  * @method static \string basePath()
+ * @method static \void setBasePath(string $appPath)
  * @method static \string controllersPath()
- * @method static \string joinPaths(string ...$args)
  *
  * @see Application
  */

@@ -15,34 +15,45 @@ trait FilesystemHelper
     }
 
     /**
+     * Sets the base path of the application.
+     *
+     * @param string $appPath The base path of the application.
+     * @return void
+     */
+    public function setBasePath(string $appPath): void
+    {
+        $this->app_path = $appPath;
+    }
+
+    /**
      * Returns the path to the controllers directory.
      *
      * @return string The path to the controllers directory.
      */
     public function controllersPath(): string
     {
-        return $this->joinPaths($this->app_path, 'src', 'http','controllers');
+        return joinPaths($this->app_path, 'src', 'http','controllers');
     }
 
     /**
-     * Joins multiple paths together to create a single path.
+     * Returns the path to a resource file or directory.
      *
-     * @param string $basePath The base path to start with.
-     * @param string[] $paths The paths to append to the base path.
-     * @return string The resulting path after joining all the paths together.
-     *
-     * @link https://github.com/laravel/framework/blob/11.x/src/Illuminate/Filesystem/functions.php
+     * @param string ...$path The path segments to append to the base resource path.
+     * @return string The path to the resource file or directory.
      */
-    public function joinPaths(string $basePath, ...$paths): string
+    public function resourcePath(): string
     {
-        foreach ($paths as $index => $path) {
-            if (empty($path)) {
-                unset($paths[$index]);
-            } else {
-                $paths[$index] = DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR);
-            }
-        }
+        return joinPaths($this->app_path, 'resources', ...func_get_args());
+    }
 
-        return $basePath.implode('', $paths);
+    /**
+     * Returns the path to a view file or directory.
+     *
+     * @param string ...$path The path segments to append to the base view path.
+     * @return string The path to the view file or directory.
+     */
+    public function viewsPath(): string
+    {
+        return $this->resourcePath('views', ...func_get_args());
     }
 }
