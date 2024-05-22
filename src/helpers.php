@@ -104,3 +104,66 @@ function data_get(mixed $target, array|string $key, mixed $default = null): mixe
 
     return $target;
 }
+
+/**
+ * Sets a value in a nested array or object using dot notation.
+ *
+ * @link https://github.com/laravel/framework/blob/11.x/src/Illuminate/Collections/helpers.php#L109
+ *
+ * @param mixed &$target The target array or object to set the value in.
+ * @param mixed $key The key or keys to use for setting the value. If an array, each key will be used in order.
+ * @param mixed $value The value to set.
+ * @param bool $overwrite Whether to overwrite existing values. Defaults to true.
+ * @return mixed The modified target array or object.
+ */
+function data_set(mixed &$target, mixed $key, mixed $value, bool $overwrite = true): mixed
+{
+    $keys = is_array($key) ? $key : explode('.', $key);
+    $segment = array_shift($keys);
+
+    if($segment === '*') {
+        if (! Arr::accessible($target)) {
+            $target = [];
+        }
+
+        if ($keys) {
+            foreach ($target as &$inner) {
+                data_set($inner, $keys, $value, $overwrite);
+            }
+        } elseif ($overwrite) {
+            foreach ($target as &$inner) {
+                $inner = $value;
+            }
+        }
+    } elseif(Arr::accessible($target)) {
+        if($keys) {
+            if (! Arr::exists($target, $segment)) {
+                $target[$segment] = [];
+            }
+
+            data_set($target[$segment], $keys, $value, $overwrite);
+        } elseif($overwrite || ! Arr::exists($target, $segment)) {
+            $target[$segment] = $value;
+        }
+    } elseif (is_object($target)) {
+        if ($keys) {
+            if (! isset($target->{$segment})) {
+                $target->{$segment} = [];
+            }
+
+            data_set($target->{$segment}, $keys, $value, $overwrite);
+        } elseif ($overwrite || ! isset($target->{$segment})) {
+            $target->{$segment} = $value;
+        }
+    } else {
+        $target = [];
+
+        if ($keys) {
+            data_set($target[$segment], $keys, $value, $overwrite);
+        } elseif ($overwrite) {
+            $target[$segment] = $value;
+        }
+    }
+
+    return $target;
+}
