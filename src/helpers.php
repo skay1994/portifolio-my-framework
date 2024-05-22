@@ -50,3 +50,57 @@ function value(mixed $value, ...$args): mixed
 {
     return $value instanceof Closure ? $value(...$args) : $value;
 }
+
+/**
+ * Retrieves a value from a nested array or object using dot notation.
+ *
+ * @link https://github.com/laravel/framework/blob/11.x/src/Illuminate/Collections/helpers.php#L46
+ *
+ * @param mixed $target The target array or object to retrieve the value from.
+ * @param array|string $key The key or keys to use for retrieval. If an array, each key will be used in order.
+ * @param mixed|null $default The default value to return if the key is not found.
+ * @return mixed The retrieved value, or the default value if the key is not found.
+ */
+function data_get(mixed $target, array|string $key, mixed $default = null): mixed
+{
+    $keys = is_array($key) ? $key : explode('.', $key);
+
+    foreach ($keys as $i => $segment) {
+        unset($keys[$i]);
+
+        if (is_null($segment)) {
+            return $target;
+        }
+
+        if ($segment === '*') {
+            if (!is_iterable($target)) {
+                return value($default);
+            }
+
+            $result = [];
+
+            foreach ($target as $item) {
+                $result[] = data_get($item, $key);
+            }
+
+            return $result;
+        }
+
+        $segment = match ($segment) {
+            '\*' => '*',
+            '{first}' => array_key_first(is_array($target) ? $target : [$target]),
+            '{last}' => array_key_last(is_array($target) ? $target : [$target]),
+            default => $segment,
+        };
+
+        if(is_array($target) && array_key_exists($segment, $target)) {
+            $target = $target[$segment];
+        } elseif (is_object($target) && isset($target->{$segment})) {
+            $target = $target->{$segment};
+        } else {
+            return value($default);
+        }
+    }
+
+    return $target;
+}
