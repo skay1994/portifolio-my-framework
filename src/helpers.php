@@ -1,6 +1,7 @@
 <?php
 
 use Skay1994\MyFramework\Facades\Container;
+use Skay1994\MyFramework\Helpers\Arr;
 use Skay1994\MyFramework\View;
 
 /**
@@ -35,4 +36,17 @@ function joinPaths(string $basePath, ...$paths): string
 function view(string $view, array $data = []): string
 {
     return Container::make(View::class)->render($view, $data);
+}
+
+/**
+ * Returns the result of calling a Closure with the given arguments if the input is a Closure,
+ * otherwise returns the input itself.
+ *
+ * @param mixed $value The input value to check if it's a Closure.
+ * @param mixed ...$args The arguments to pass to the Closure if it is one.
+ * @return mixed The result of calling the Closure with the given arguments, or the input value itself.
+ */
+function value(mixed $value, ...$args): mixed
+{
+    return $value instanceof Closure ? $value(...$args) : $value;
 }
