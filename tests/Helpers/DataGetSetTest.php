@@ -88,3 +88,71 @@ it('It cannot recovery value from array with dot notation and receive default va
 });
 
 // data_set Tests
+
+it('It can set value in array', function () {
+    $values = [
+        'key1' => 'value1',
+        'key2' => 'value2',
+    ];
+
+    data_set($values, 'key3', 'value3');
+
+    expect($values)->toEqual([
+        'key1' => 'value1',
+        'key2' => 'value2',
+        'key3' => 'value3',
+    ]);
+});
+
+it('It can set value in array with dot notation', function () {
+    $values = [
+        'key1' => [ 'key2' => 'value2' ],
+        'key2' => 'value2',
+    ];
+
+    data_set($values, 'key1.key3', 'value3');
+
+    expect($values)->toEqual([
+        'key1' => [ 'key2' => 'value2', 'key3' => 'value3' ],
+        'key2' => 'value2',
+    ]);
+});
+
+it('It can overwrite value in array with dot notation', function () {
+    $values = [
+        'key1' => [ 'key2' => 'value2', 'key3' => null ],
+        'key2' => 'value2',
+    ];
+
+    data_set($values, 'key1.key3', 'value3');
+
+    expect($values)->toEqual([
+        'key1' => [ 'key2' => 'value2', 'key3' => 'value3' ],
+        'key2' => 'value2',
+    ]);
+});
+
+it('It can overwrite nested value in array with dot notation', function () {
+    $values = [
+        'key1' => [
+            [ 'key2' => 'value2', 'key3' => null ],
+            [ 'key2' => 'value2', 'key3' => null ]
+        ],
+        'key2' => 'value2',
+    ];
+
+    data_set($values, 'key1.*.key3', 'value3');
+
+    expect($values['key1'][0]['key3'])->toEqual('value3')
+        ->and($values['key1'][1]['key3'])->toEqual('value3');
+});
+
+it('It can set value and receive array from null variable ', function () {
+    $values = null;
+
+    data_set($values, 'key1', 'value1');
+
+    expect($values)->toEqual([
+        'key1' => 'value1',
+    ]);
+});
