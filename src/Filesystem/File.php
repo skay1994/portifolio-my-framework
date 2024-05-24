@@ -20,6 +20,16 @@ readonly class File
         return basename($this->path, '.' . pathinfo($this->path, PATHINFO_EXTENSION));
     }
 
+    /**
+     * Returns the name of the file with the extension.
+     *
+     * @return string The name of the file with the extension.
+     */
+    public function nameWithExtension(): string
+    {
+        return basename($this->path);
+    }
+
     public function path(): string
     {
         return $this->path;
