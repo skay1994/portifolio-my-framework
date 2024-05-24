@@ -22,13 +22,12 @@ class Config
      */
     public function init(): void
     {
-        $path = joinPaths(dirname(__DIR__), 'src', 'config');
-        $files = $this->filesystem->files($path);
+        $files = $this->filesystem->files($this->app->configPath());
 
         foreach ($files as $file) {
             $name = str_replace('.php', '', $file->name());
-            $config = $this->filesystem->getRequired($file->path());
-            $appConfig = $this->getAppConfigFile($file->name());
+            $appConfig = $this->filesystem->getRequired($file->path());
+            $config = $this->getConfigFile($file->name());
 
             self::$CONFIG[$name] = array_merge($config, $appConfig);
         }
@@ -37,9 +36,9 @@ class Config
     /**
      * @throws FileNotFoundException
      */
-    private function getAppConfigFile(string $file): array
+    private function getConfigFile(string $file): array
     {
-        $path = joinPaths($this->app->basePath(), 'config', $file);
+        $path = joinPaths(dirname(__DIR__), 'src', 'config', $file);
 
         if(!$this->filesystem->exists($path)) {
             return [];
