@@ -34,6 +34,44 @@ class Config
     }
 
     /**
+     * Loads a configuration file and merges it with the existing configuration.
+     *
+     * @param string|File $file The path to the configuration file or a File object.
+     * @param string $type The type of configuration file ('app' or 'framework'). Default is 'app'.
+     * @param bool $fullPath Whether to use the provided file path directly. Default is false.
+     * @return void
+     *
+     * @throws FileNotFoundException
+     */
+    public function load(string|File $file, string $type = 'app', bool $fullPath = false): void
+    {
+        if(is_string($file)) {
+            $path = match($type) {
+                'app' => joinPaths($this->app->configPath(), $file),
+                'framework' => joinPaths($this->app->defaultConfigPath(), $file),
+            };
+
+            if($fullPath) {
+                $path = $file;
+            }
+
+            $file = new File($path);
+        }
+
+        if(!$file->exists) {
+            return;
+        }
+
+        $config = $this->getConfigFile($file->path);
+
+        if(isset(self::$CONFIG[$file->name])) {
+            $config = array_merge($config, self::$CONFIG[$file->name]);
+        }
+
+        self::$CONFIG[$file->name] = $config;
+    }
+
+    /**
      * @throws FileNotFoundException
      */
     private function getConfigFile(string $file): array
