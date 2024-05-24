@@ -74,10 +74,8 @@ class Config
     /**
      * @throws FileNotFoundException
      */
-    private function getConfigFile(string $file): array
+    private function getConfigFile(string $path): array
     {
-        $path = joinPaths(dirname(__DIR__), 'src', 'config', $file);
-
         if(!$this->filesystem->exists($path)) {
             return [];
         }
