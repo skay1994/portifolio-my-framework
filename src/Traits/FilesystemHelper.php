@@ -56,4 +56,24 @@ trait FilesystemHelper
     {
         return $this->resourcePath('views', ...func_get_args());
     }
+
+    /**
+     * Returns the path to the config directory.
+     *
+     * @return string The path to the config directory.
+     */
+    public function configPath(): string
+    {
+        return joinPaths($this->app_path, 'config');
+    }
+
+    /**
+     * Returns the path to the default config directory.
+     *
+     * @return string The path to the default config directory.
+     */
+    public function defaultConfigPath(): string
+    {
+        return joinPaths(dirname(__DIR__), 'config');
+    }
 }
