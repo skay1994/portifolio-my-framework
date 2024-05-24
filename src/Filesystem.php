@@ -4,6 +4,7 @@ namespace Skay1994\MyFramework;
 
 use Skay1994\MyFramework\Exceptions\Filesystem\FileFolderNotFoundException;
 use Skay1994\MyFramework\Exceptions\Filesystem\FileNotFoundException;
+use Skay1994\MyFramework\Filesystem\File;
 
 class Filesystem
 {
@@ -106,5 +107,29 @@ class Filesystem
         }
 
         throw new FileNotFoundException('File not found at path: ' . $path);
+    }
+
+    /**
+     * Retrieves an iterator of File objects representing the files in the specified directory.
+     *
+     * @param string $path The path to the directory.
+     * @throws FileFolderNotFoundException If the specified path does not exist.
+     * @return \Generator A generator that yields File objects.
+     */
+    public function files(string $path): \Generator
+    {
+        if(!$this->exists($path)) {
+            throw new FileFolderNotFoundException('File or folder not found: ' . $path);
+        }
+
+        $iterator = new \DirectoryIterator($path);
+
+        foreach($iterator as $file) {
+            if($file->isDot() || $file->isDir()) {
+                continue;
+            }
+
+            yield new File($file->getPathname());
+        }
     }
 }
