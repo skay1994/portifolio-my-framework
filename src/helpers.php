@@ -46,9 +46,11 @@ function view(string $view, array $data = []): string
  * @param mixed ...$args The arguments to pass to the Closure if it is one.
  * @return mixed The result of calling the Closure with the given arguments, or the input value itself.
  */
-function value(mixed $value, ...$args): mixed
-{
-    return $value instanceof Closure ? $value(...$args) : $value;
+if(!function_exists('value')) {
+    function value(mixed $value, ...$args): mixed
+    {
+        return $value instanceof Closure ? $value(...$args) : $value;
+    }
 }
 
 /**
@@ -61,48 +63,50 @@ function value(mixed $value, ...$args): mixed
  * @param mixed|null $default The default value to return if the key is not found.
  * @return mixed The retrieved value, or the default value if the key is not found.
  */
-function data_get(mixed $target, array|string $key, mixed $default = null): mixed
-{
-    $keys = is_array($key) ? $key : explode('.', $key);
+if(!function_exists('data_get')) {
+    function data_get(mixed $target, array|string $key, mixed $default = null): mixed
+    {
+        $keys = is_array($key) ? $key : explode('.', $key);
 
-    foreach ($keys as $i => $segment) {
-        unset($keys[$i]);
+        foreach ($keys as $i => $segment) {
+            unset($keys[$i]);
 
-        if (is_null($segment)) {
-            return $target;
-        }
+            if (is_null($segment)) {
+                return $target;
+            }
 
-        if ($segment === '*') {
-            if (!is_iterable($target)) {
+            if ($segment === '*') {
+                if (!is_iterable($target)) {
+                    return value($default);
+                }
+
+                $result = [];
+
+                foreach ($target as $item) {
+                    $result[] = data_get($item, $key);
+                }
+
+                return $result;
+            }
+
+            $segment = match ($segment) {
+                '\*' => '*',
+                '{first}' => array_key_first(is_array($target) ? $target : [$target]),
+                '{last}' => array_key_last(is_array($target) ? $target : [$target]),
+                default => $segment,
+            };
+
+            if (is_array($target) && array_key_exists($segment, $target)) {
+                $target = $target[$segment];
+            } elseif (is_object($target) && isset($target->{$segment})) {
+                $target = $target->{$segment};
+            } else {
                 return value($default);
             }
-
-            $result = [];
-
-            foreach ($target as $item) {
-                $result[] = data_get($item, $key);
-            }
-
-            return $result;
         }
 
-        $segment = match ($segment) {
-            '\*' => '*',
-            '{first}' => array_key_first(is_array($target) ? $target : [$target]),
-            '{last}' => array_key_last(is_array($target) ? $target : [$target]),
-            default => $segment,
-        };
-
-        if(is_array($target) && array_key_exists($segment, $target)) {
-            $target = $target[$segment];
-        } elseif (is_object($target) && isset($target->{$segment})) {
-            $target = $target->{$segment};
-        } else {
-            return value($default);
-        }
+        return $target;
     }
-
-    return $target;
 }
 
 /**
@@ -116,54 +120,56 @@ function data_get(mixed $target, array|string $key, mixed $default = null): mixe
  * @param bool $overwrite Whether to overwrite existing values. Defaults to true.
  * @return mixed The modified target array or object.
  */
-function data_set(mixed &$target, mixed $key, mixed $value, bool $overwrite = true): mixed
-{
-    $keys = is_array($key) ? $key : explode('.', $key);
-    $segment = array_shift($keys);
+if(!function_exists('data_set')) {
+    function data_set(mixed &$target, mixed $key, mixed $value, bool $overwrite = true): mixed
+    {
+        $keys = is_array($key) ? $key : explode('.', $key);
+        $segment = array_shift($keys);
 
-    if($segment === '*') {
-        if (! Arr::accessible($target)) {
+        if ($segment === '*') {
+            if (!Arr::accessible($target)) {
+                $target = [];
+            }
+
+            if ($keys) {
+                foreach ($target as &$inner) {
+                    data_set($inner, $keys, $value, $overwrite);
+                }
+            } elseif ($overwrite) {
+                foreach ($target as &$inner) {
+                    $inner = $value;
+                }
+            }
+        } elseif (Arr::accessible($target)) {
+            if ($keys) {
+                if (!Arr::exists($target, $segment)) {
+                    $target[$segment] = [];
+                }
+
+                data_set($target[$segment], $keys, $value, $overwrite);
+            } elseif ($overwrite || !Arr::exists($target, $segment)) {
+                $target[$segment] = $value;
+            }
+        } elseif (is_object($target)) {
+            if ($keys) {
+                if (!isset($target->{$segment})) {
+                    $target->{$segment} = [];
+                }
+
+                data_set($target->{$segment}, $keys, $value, $overwrite);
+            } elseif ($overwrite || !isset($target->{$segment})) {
+                $target->{$segment} = $value;
+            }
+        } else {
             $target = [];
-        }
 
-        if ($keys) {
-            foreach ($target as &$inner) {
-                data_set($inner, $keys, $value, $overwrite);
-            }
-        } elseif ($overwrite) {
-            foreach ($target as &$inner) {
-                $inner = $value;
+            if ($keys) {
+                data_set($target[$segment], $keys, $value, $overwrite);
+            } elseif ($overwrite) {
+                $target[$segment] = $value;
             }
         }
-    } elseif(Arr::accessible($target)) {
-        if($keys) {
-            if (! Arr::exists($target, $segment)) {
-                $target[$segment] = [];
-            }
 
-            data_set($target[$segment], $keys, $value, $overwrite);
-        } elseif($overwrite || ! Arr::exists($target, $segment)) {
-            $target[$segment] = $value;
-        }
-    } elseif (is_object($target)) {
-        if ($keys) {
-            if (! isset($target->{$segment})) {
-                $target->{$segment} = [];
-            }
-
-            data_set($target->{$segment}, $keys, $value, $overwrite);
-        } elseif ($overwrite || ! isset($target->{$segment})) {
-            $target->{$segment} = $value;
-        }
-    } else {
-        $target = [];
-
-        if ($keys) {
-            data_set($target[$segment], $keys, $value, $overwrite);
-        } elseif ($overwrite) {
-            $target[$segment] = $value;
-        }
+        return $target;
     }
-
-    return $target;
 }
