@@ -39,11 +39,12 @@ class Application
     public function defaultFacades(): void
     {
         $container = $this->container;
+        $container->singleton('app', $this);
+        $container->singleton('container', $container);
 
         $facades = [
-            'container' => $container,
-            'app' => $this,
             'router' => $container->get(Router::class),
+            'config' => $container->get(Config::class),
         ];
 
         foreach ($facades as $key => $value) {
