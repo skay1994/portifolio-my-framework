@@ -11,6 +11,9 @@ use Skay1994\MyFramework\Facade;
  * @method static \string basePath()
  * @method static \void setBasePath(string $appPath)
  * @method static \string controllersPath()
+ * @method static \string resourcePath()
+ * @method static \string viewsPath()
+ * @method static \string configPath()
  *
  * @see Application
  */
