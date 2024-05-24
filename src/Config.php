@@ -4,6 +4,7 @@ namespace Skay1994\MyFramework;
 
 use Skay1994\MyFramework\Exceptions\Filesystem\FileFolderNotFoundException;
 use Skay1994\MyFramework\Exceptions\Filesystem\FileNotFoundException;
+use Skay1994\MyFramework\Filesystem\File;
 
 class Config
 {
@@ -22,14 +23,22 @@ class Config
      */
     public function init(): void
     {
-        $files = $this->filesystem->files($this->app->configPath());
+        $emptyAppPath = false;
+        $path = $this->app->configPath();
+
+        if(empty($this->app->basePath())) {
+            $emptyAppPath = true;
+            $path = $this->app->defaultConfigPath();
+        }
+
+        $files = $this->filesystem->files($path);
 
         foreach ($files as $file) {
-            $name = str_replace('.php', '', $file->name());
-            $appConfig = $this->filesystem->getRequired($file->path());
-            $config = $this->getConfigFile($file->name());
+            $this->load($file);
 
-            self::$CONFIG[$name] = array_merge($config, $appConfig);
+            if(!$emptyAppPath) {
+                $this->load($file->name_ext, type: 'framework');
+            }
         }
     }
 
