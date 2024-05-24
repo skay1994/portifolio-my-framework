@@ -10,9 +10,14 @@ readonly class File
     {
     }
 
+    /**
+     * Returns the name of the file without the extension.
+     *
+     * @return string The name of the file.
+     */
     public function name(): string
     {
-        return basename($this->path);
+        return basename($this->path, '.' . pathinfo($this->path, PATHINFO_EXTENSION));
     }
 
     public function path(): string
