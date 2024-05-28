@@ -199,3 +199,10 @@ if(!function_exists('config')) {
         };
     }
 }
+
+if(!function_exists('env')) {
+    function env(string $key, mixed $default = null): mixed
+    {
+        return Container::get('env')->get($key, $default);
+    }
+}
