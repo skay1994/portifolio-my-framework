@@ -2,6 +2,7 @@
 
 use Skay1994\MyFramework\Config;
 use Skay1994\MyFramework\Facades\Container;
+use Skay1994\MyFramework\Facades\Env;
 use Skay1994\MyFramework\Helpers\Arr;
 use Skay1994\MyFramework\View;
 
@@ -203,6 +204,6 @@ if(!function_exists('config')) {
 if(!function_exists('env')) {
     function env(string $key, mixed $default = null): mixed
     {
-        return Container::get('env')->get($key, $default);
+        return Env::get($key, $default);
     }
 }
