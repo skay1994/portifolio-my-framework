@@ -45,8 +45,9 @@ class Application
         $container->singleton('container', $container);
 
         $facades = [
-            'router' => $container->get(Router::class),
+            'env' => $container->get(Env::class),
             'config' => $container->get(Config::class),
+            'router' => $container->get(Router::class),
         ];
 
         foreach ($facades as $key => $value) {
