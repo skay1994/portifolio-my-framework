@@ -51,21 +51,22 @@ class Config
      */
     public function init(): void
     {
-        $emptyAppPath = false;
-        $path = $this->app->configPath();
+        $this->reset();
 
-        if(empty($this->app->basePath())) {
-            $emptyAppPath = true;
-            $path = $this->app->defaultConfigPath();
-        }
+        $paths = [
+            $this->app->configPath(),
+            $this->app->defaultConfigPath()
+        ];
 
-        $files = $this->filesystem->files($path);
+        foreach ($paths as $path) {
+            if(!$this->filesystem->exists($path)) {
+                continue;
+            }
 
-        foreach ($files as $file) {
-            $this->load($file);
+            $files = $this->filesystem->files($path);
 
-            if(!$emptyAppPath) {
-                $this->load($file->name_ext, type: 'framework');
+            foreach ($files as $file) {
+                $this->load($file);
             }
         }
     }
