@@ -118,8 +118,8 @@ class Filesystem
      */
     public function files(string $path): \Generator
     {
-        if(!$this->exists($path)) {
-            throw new FileFolderNotFoundException('File or folder not found: ' . $path);
+        if(!$this->isDir($path)) {
+            throw new FileFolderNotFoundException('Folder not found: ' . $path);
         }
 
         $iterator = new \DirectoryIterator($path);
