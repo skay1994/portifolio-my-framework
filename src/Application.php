@@ -2,12 +2,13 @@
 
 namespace Skay1994\MyFramework;
 
+use Skay1994\MyFramework\Traits\EnvironmentTrait;
 use Skay1994\MyFramework\Traits\FilesystemHelper;
 use Spatie\Ignition\Ignition;
 
 class Application
 {
-    use FilesystemHelper;
+    use FilesystemHelper, EnvironmentTrait;
 
     const VERSION = '0.0.1';
 
