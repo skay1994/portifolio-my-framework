@@ -43,7 +43,15 @@ final class MultiReader implements ReaderInterface
 
     public function has(string $key): bool
     {
-        //
+        foreach ($this->readers as $reader) {
+            $reader = $reader::construct();
+
+            if ($reader->isSupported() && $reader->has($key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function construct(): ReaderInterface
