@@ -7,11 +7,12 @@ trait FilesystemHelper
     /**
      * Returns the base path of the application.
      *
+     * @param string ...$path The path segments to append to the base path.
      * @return string|null The base path of the application.
      */
     public function basePath(): ?string
     {
-        return $this->app_path;
+        return joinPaths($this->app_path, ...func_get_args());
     }
 
     /**
