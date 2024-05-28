@@ -24,7 +24,7 @@ readonly class Env
     {
         $value = $this->reader->get($key);
 
-        if(empty($value)) {
+        if(is_null($value)) {
             return value($default);
         }
 
