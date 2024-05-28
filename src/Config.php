@@ -27,6 +27,24 @@ class Config
         self::$CONFIG = [];
     }
 
+    public function get(string $key = null, mixed $default = null)
+    {
+        if(is_null($key)) {
+            return self::$CONFIG;
+        }
+
+        return data_get(self::$CONFIG, $key, $default);
+    }
+
+    public function set(mixed $key, mixed $value = null, bool $overwrite = true): void
+    {
+        $keys = is_array($key) ? $key : [$key => $value];
+
+        foreach ($keys as $key => $value) {
+            data_set(self::$CONFIG, $key, $value, $overwrite);
+        }
+    }
+
     /**
      * @throws FileFolderNotFoundException
      * @throws FileNotFoundException
