@@ -24,6 +24,10 @@ final class MultiReader implements ReaderInterface
             $reader = $reader::construct();
 
             if ($reader->isSupported()) {
+                if(!$reader->has($key)) {
+                    continue;
+                }
+
                 $value = $reader->get($key);
 
                 if ($value === false) {
