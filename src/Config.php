@@ -18,6 +18,16 @@ class Config
     }
 
     /**
+     * Clears the configuration loaded.
+     *
+     * @return void
+     */
+    public function reset(): void
+    {
+        self::$CONFIG = [];
+    }
+
+    /**
      * @throws FileFolderNotFoundException
      * @throws FileNotFoundException
      */
@@ -96,5 +106,10 @@ class Config
         }
 
         return $config;
+    }
+
+    public function __destruct()
+    {
+        $this->reset();
     }
 }
