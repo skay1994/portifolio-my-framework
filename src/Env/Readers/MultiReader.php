@@ -60,11 +60,11 @@ final class MultiReader implements ReaderInterface
 
     public static function construct(): ReaderInterface
     {
-        //
+        return new self();
     }
 
     public function isSupported(): bool
     {
-        //
+        return true;
     }
 }
