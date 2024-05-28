@@ -65,16 +65,4 @@ class Application
         $router = $this->container->get('router');
         $router->registerRouters();
     }
-
-    public function config(?string $key, mixed $default = null)
-    {
-        /** @var Config $config */
-        $config = $this->container->get(Config::class);
-
-        if(is_null($key)) {
-            return $config;
-        }
-
-        return $config->get($key, $default);
-    }
 }

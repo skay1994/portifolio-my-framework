@@ -1,5 +1,6 @@
 <?php
 
+use Skay1994\MyFramework\Config;
 use Skay1994\MyFramework\Facades\Container;
 use Skay1994\MyFramework\Helpers\Arr;
 use Skay1994\MyFramework\View;
@@ -171,5 +172,30 @@ if(!function_exists('data_set')) {
         }
 
         return $target;
+    }
+}
+
+/**
+ * Retrieves the configuration value for a given key or sets the configuration values.
+ *
+ * @param mixed $key The key of the configuration value to retrieve or an array of key-value pairs to set. If null, returns the entire configuration.
+ * @param mixed $default The default value to return if the key is not found.
+ * @return string|array|Config|null The configuration value for the given key or the entire configuration if $key is null.
+ */
+if(!function_exists('config')) {
+    function config(mixed $key = null, mixed $default = null): string|array|Config|null
+    {
+        /** @var Config $config */
+        $config = Container::get('config');
+
+        if(is_array($key)) {
+           $config->set($key);
+           return null;
+        }
+
+        return match($key) {
+            null => $config,
+            default => $config->get($key, $default),
+        };
     }
 }
