@@ -40,8 +40,8 @@ class Config
     {
         $keys = is_array($key) ? $key : [$key => $value];
 
-        foreach ($keys as $key => $value) {
-            data_set(self::$CONFIG, $key, $value, $overwrite);
+        foreach ($keys as $k => $v) {
+            data_set(self::$CONFIG, $k, $v, $overwrite);
         }
     }
 
