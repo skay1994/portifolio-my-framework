@@ -4,6 +4,9 @@ namespace Skay1994\MyFramework\Env\Readers;
 
 class MultiReader
 {
+    /**
+     * @var array|ReaderInterface[]
+     */
     private array $readers = [
         FileReader::class,
         ServerConstReader::class,
