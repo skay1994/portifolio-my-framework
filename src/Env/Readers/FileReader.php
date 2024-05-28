@@ -55,8 +55,12 @@ class FileReader implements ReaderInterface
         putenv(sprintf("%s=%s", $key, $value));
     }
 
-    private function loadEnv(string $file = '.env'): void
+    private function loadEnv(string $file): void
     {
+        if(!file_exists($file)) {
+            return;
+        }
+
         $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         foreach ($lines as $line) {
