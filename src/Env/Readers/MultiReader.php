@@ -2,7 +2,7 @@
 
 namespace Skay1994\MyFramework\Env\Readers;
 
-class MultiReader
+final class MultiReader implements ReaderInterface
 {
     /**
      * @var array|ReaderInterface[]
@@ -39,5 +39,20 @@ class MultiReader
         }
 
         return null;
+    }
+
+    public function has(string $key): bool
+    {
+        //
+    }
+
+    public static function construct(): ReaderInterface
+    {
+        //
+    }
+
+    public function isSupported(): bool
+    {
+        //
     }
 }
