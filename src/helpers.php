@@ -1,9 +1,8 @@
 <?php
 
 use Skay1994\MyFramework\Config;
-use Skay1994\MyFramework\Facades\Container;
-use Skay1994\MyFramework\Facades\Env;
-use Skay1994\MyFramework\Helpers\Arr;
+use Skay1994\MyFramework\Facades\{Container, Env};
+use Skay1994\MyFramework\Helpers\{Arr};
 use Skay1994\MyFramework\View;
 
 /**
