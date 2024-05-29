@@ -12,11 +12,12 @@ it('It can load default config', function () {
 
 it('It can load app config and override default config', function () {
     $this->app->setBasePath(__DIR__);
+    Container::resetDefault();
     $this->app->run();
 
     expect(config('app.app_name'))
         ->toBe('MyFramework Test');
-})->skip();
+});
 
 it('It can change a app config', function () {
     config(['app.app_name' => 'MyFramework Custom']);
