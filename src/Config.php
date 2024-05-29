@@ -92,7 +92,7 @@ class Config
         }
 
         if(!$file->exists) {
-            return;
+            throw new FileNotFoundException('Config file not found: ' . $type->path($file->name_ext));
         }
 
         $config = $this->getConfigFile($file->path);
