@@ -7,6 +7,8 @@ afterEach(function () {
 });
 
 it('It can load default config', function () {
+    Container::resetDefault();
+    $this->app->run();
     expect(config('app.app_name'))->toBe('My Framework');
 });
 
