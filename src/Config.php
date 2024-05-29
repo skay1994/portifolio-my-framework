@@ -2,6 +2,7 @@
 
 namespace Skay1994\MyFramework;
 
+use Skay1994\MyFramework\Enums\ConfigSourceEnum;
 use Skay1994\MyFramework\Exceptions\Filesystem\FileFolderNotFoundException;
 use Skay1994\MyFramework\Exceptions\Filesystem\FileNotFoundException;
 use Skay1994\MyFramework\Filesystem\File;
@@ -46,16 +47,20 @@ class Config
     }
 
     /**
-     * @throws FileFolderNotFoundException
+     * Initializes the configuration by resetting the configuration array and loading
+     * configuration files from the default and application configuration paths.
+     *
+     * @return void
      * @throws FileNotFoundException
+     * @throws FileFolderNotFoundException
      */
     public function init(): void
     {
         $this->reset();
 
         $paths = [
+            $this->app->defaultConfigPath(),
             $this->app->configPath(),
-            $this->app->defaultConfigPath()
         ];
 
         foreach ($paths as $path) {
