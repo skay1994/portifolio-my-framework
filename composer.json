@@ -18,7 +18,8 @@
         "pestphp/pest": "^2.34"
     },
     "scripts": {
-        "test": "vendor/bin/pest"
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage-html coverage"
     },
     "autoload": {
         "files": [
