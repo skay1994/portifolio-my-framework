@@ -2,19 +2,20 @@
 
 namespace Skay1994\MyFramework;
 
+use Skay1994\MyFramework\Traits\EnvironmentTrait;
 use Skay1994\MyFramework\Traits\FilesystemHelper;
 use Spatie\Ignition\Ignition;
 
 class Application
 {
-    use FilesystemHelper;
+    use FilesystemHelper, EnvironmentTrait;
 
     const VERSION = '0.0.1';
 
     public Container $container;
 
     public function __construct(
-        public ?string $app_path = null
+        public ?string $app_path = ''
     )
     {
         $this->container = Container::getInstance();
@@ -22,11 +23,13 @@ class Application
 
     public function run()
     {
-        $this->defaultFacades();
-
         if (class_exists('Spatie\Ignition\Ignition')) {
             Ignition::make()->setTheme('dark')->register();
         }
+
+        $this->defaultFacades();
+
+        $this->container->get(Config::class)->init();
     }
 
     /**
@@ -39,10 +42,12 @@ class Application
     public function defaultFacades(): void
     {
         $container = $this->container;
+        $container->singleton('app', $this);
+        $container->singleton('container', $container);
 
         $facades = [
-            'container' => $container,
-            'app' => $this,
+            'env' => $container->get(Env::class),
+            'config' => $container->get(Config::class),
             'router' => $container->get(Router::class),
         ];
 

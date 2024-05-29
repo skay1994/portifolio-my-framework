@@ -7,11 +7,12 @@ trait FilesystemHelper
     /**
      * Returns the base path of the application.
      *
+     * @param string ...$path The path segments to append to the base path.
      * @return string|null The base path of the application.
      */
     public function basePath(): ?string
     {
-        return $this->app_path;
+        return joinPaths($this->app_path, ...func_get_args());
     }
 
     /**
@@ -55,5 +56,25 @@ trait FilesystemHelper
     public function viewsPath(): string
     {
         return $this->resourcePath('views', ...func_get_args());
+    }
+
+    /**
+     * Returns the path to the config directory.
+     *
+     * @return string The path to the config directory.
+     */
+    public function configPath(): string
+    {
+        return joinPaths($this->app_path, 'config');
+    }
+
+    /**
+     * Returns the path to the default config directory.
+     *
+     * @return string The path to the default config directory.
+     */
+    public function defaultConfigPath(): string
+    {
+        return joinPaths(dirname(__DIR__), 'config');
     }
 }
