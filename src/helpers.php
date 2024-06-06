@@ -1,5 +1,6 @@
 <?php
 
+use Skay1994\MyFramework\Application;
 use Skay1994\MyFramework\Config;
 use Skay1994\MyFramework\Facades\{Container, Env};
 use Skay1994\MyFramework\Helpers\{Arr};
@@ -204,5 +205,24 @@ if(!function_exists('env')) {
     function env(string $key, mixed $default = null): mixed
     {
         return Env::get($key, $default);
+    }
+}
+
+if(!function_exists('app')) {
+    /**
+     * @template TValue
+     *
+     * Retrieves an instance of the application or a specific class from the container.
+     *
+     * @param string|null $abstract The name of the class to retrieve from the container. If null, retrieves the application instance.
+     * @return class-string<TValue>|Application|mixed The instance of the application or the requested class.
+     */
+    function app(string $abstract = null): mixed
+    {
+        if(!is_null($abstract)) {
+            return Container::get($abstract);
+        }
+
+        return Container::get('app');
     }
 }
